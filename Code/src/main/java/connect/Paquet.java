@@ -1,27 +1,25 @@
 package connect;
 
-public class Paquet {
+import java.io.Serializable;
+
+public class Paquet implements Serializable {
 
 		public TypedePaquet type; 
-		int adressMac;
-		String pseudo;
-		String contenu; //message 
-		public byte[] transformeEnByte;
+		public int adressMac;
+		public String pseudo;
+		public String contenu; //message 
 		
-		public Paquet(TypedePaquet type, int addressMac, String Pseudo, String contenu) {
+		//public byte[] transformeEnByte;
+		
+		public Paquet(TypedePaquet type, int addressMac, String Pseudo, String Contenu) {
 			this.type = type;
 			this.adressMac = addressMac;
 			this.pseudo = Pseudo;
-			this.contenu = contenu;
-			
-		}
-		void setTransformEnByte() {
-			this.transformeEnByte = 
-			
+			this.contenu = Contenu;			
 		}
 		
-		public int length(){
-			
-			return (type.values().d) ;
-		}
+		
+		//public int length(){			
+		//	return (type.values().d) ;
+		//}
 }

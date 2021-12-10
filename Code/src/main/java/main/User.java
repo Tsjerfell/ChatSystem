@@ -15,27 +15,30 @@ import connect.TypedePaquet;
 
 
 public class User {
-	int addressMac;
-	String pseudo;
+	public int addressMac;
+	public String pseudo;
 	//otherUser[] listOtherUsers;
 	
 	public User(int addressMac, String psuedo 	) {	
 		this.addressMac = addressMac;
-		this.psdo = psuedo;
+		this.pseudo = psuedo;
 	}
 		
-	public static void connect() {		
+	public void connect() {		
 		try {
 		    InetAddress group = InetAddress.getByName("225.6.7.8");
 		    MulticastSocket socket = new MulticastSocket();
 		    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		    Paquet paquet = new Paquet(TypedePaquet.Connexion, );
+		    Paquet paquet = new Paquet(TypedePaquet.Connexion,addressMac,pseudo,"" );
+		    ObjectOutputStream paquet = new ObjectOutputStream(socket.)
 		    
-		    DatagramPacket datagramPacket = new DatagramPacket(paquet,paquet.length(), group, 3456);
+		    DatagramPacket datagramPacket = new DatagramPacket(paquet,150, group, 3456);
 			socket.send(datagramPacket);	    
 		    socket.close();
 		} catch (Exception e) {e.printStackTrace();}
 	}
+	
+//https://stackoverflow.com/questions/3997459/send-and-receive-serialize-object-on-udp regarde ca <-
 	
 	public int recevoirPaquet(Paquet paquet) {
 		if (paquet.type == TypedePaquet.Message ) {
