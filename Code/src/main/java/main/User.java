@@ -19,13 +19,22 @@ public class User {
 	String pseudo;
 	//otherUser[] listOtherUsers;
 	
-	public User(int addressMac, String psuedo) {	
+	public User(int addressMac, String psuedo 	) {	
 		this.addressMac = addressMac;
-		this.pseudo = pseudo;
+		this.psdo = psuedo;
 	}
 		
-	public void connect() {		
-	 int a = 4;
+	public static void connect() {		
+		try {
+		    InetAddress group = InetAddress.getByName("225.6.7.8");
+		    MulticastSocket socket = new MulticastSocket();
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		    Paquet paquet = new Paquet(TypedePaquet.Connexion, );
+		    
+		    DatagramPacket datagramPacket = new DatagramPacket(paquet,paquet.length(), group, 3456);
+			socket.send(datagramPacket);	    
+		    socket.close();
+		} catch (Exception e) {e.printStackTrace();}
 	}
 	
 	public int recevoirPaquet(Paquet paquet) {
@@ -44,17 +53,6 @@ public class User {
 	
 	public static void main (String[] args) {
 		System.setProperty("java.net.preferIPv4Stack","true");
-		try {
-		    InetAddress group = InetAddress.getByName("225.6.7.8");
-		    MulticastSocket socket = new MulticastSocket();
-		    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		    Paquet paquet = new Paquet();
-		    
-		    DatagramPacket packet = new DatagramPacket(message.getBytes(),message.length(), group, 3456);
-			    socket.send(packet);
-		    }	    
-		    socket.close();
-		} catch (Exception e) {e.printStackTrace();}
-		
+		this.Connect();	
 	}
 }
