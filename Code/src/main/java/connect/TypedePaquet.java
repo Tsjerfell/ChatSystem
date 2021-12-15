@@ -4,5 +4,6 @@ public enum TypedePaquet {
 	Message,
 	Connexion,
 	Deconnexion,
-	ChangementdePseudo
+	ChangementdePseudo,
+	AckConnexion
 }

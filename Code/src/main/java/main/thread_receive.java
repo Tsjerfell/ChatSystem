@@ -6,15 +6,13 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
+import connect.ThreadTraitementPaquet;
+
 class thread_receive extends Thread {  
 	 
 	  public thread_receive () {   
 	  } 
 	  
-	  public int recevoir() {
-			System.out.println("oui");
-			return 0;
-		}
 	  
 	  @SuppressWarnings("resource")
 	public void run() {  
@@ -22,17 +20,16 @@ class thread_receive extends Thread {
 	    	InetAddress group = null;
 			try {
 				group = InetAddress.getByName("225.6.7.8");
-				MulticastSocket mSocket = null;			
-				mSocket = new MulticastSocket(3456);		   
-				mSocket.joinGroup(group);		
+				MulticastSocket mSocket = new MulticastSocket(3456);		   
+				mSocket.joinGroup(group);
+				
 				//on n'est pas sûr 100 suffit
 				byte[] buffer = new byte[100];
 				DatagramPacket packet = new DatagramPacket(buffer,buffer.length);
 				mSocket.receive(packet);
-				this.recevoir();
-	    		Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				
+				new ThreadTraitementPaquet(packet);
+				
 				} catch (UnknownHostException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

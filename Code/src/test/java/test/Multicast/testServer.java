@@ -11,7 +11,7 @@ public class testServer {
 	    InetAddress group = InetAddress.getByName("225.6.7.8");
 	    MulticastSocket socket = new MulticastSocket(3456);
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-	    String message = "UDP Multicast is awesome";
+	    String message = "INSA Toulouse";
 	    for (int i = 0; i<10;i++){
 	    	message = reader.readLine();
 	    	DatagramPacket packet = new DatagramPacket(message.getBytes(),message.length(), group, 3456);
