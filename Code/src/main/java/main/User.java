@@ -69,5 +69,8 @@ public class User {
 	
 	public static void main (String[] args) {
 		System.setProperty("java.net.preferIPv4Stack","true");
+		User User1 = new User(1234,"Hoplahopla");
+		User1.connect();
+		
 	}
 }
