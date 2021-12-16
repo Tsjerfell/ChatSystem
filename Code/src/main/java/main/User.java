@@ -18,7 +18,7 @@ public class User {
 	public int addressMac;
 	public String pseudo;
 	MulticastSocket mSocket;
-	otherUser[] listOtherUsers;
+
 	
 	public User(int addressMac, String psuedo) {	
 		this.addressMac = addressMac;
@@ -27,7 +27,6 @@ public class User {
 		
 	public void connect() {		
 		try {
-			thread_receive threadRecevoir = new thread_receive();
 			
 		    InetAddress group = InetAddress.getByName("225.6.7.8");
 		    MulticastSocket socket = new MulticastSocket();
@@ -38,14 +37,16 @@ public class User {
 		    DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 3456);
 			socket.send(datagramPacket);
 			
-			//recieve UDPs from all other users
-			byte[] buffer = new byte[100];
-	    	DatagramPacket paquetSerialiseReceived = new DatagramPacket(buffer,buffer.length);
-	    	socket.receive(paquetSerialiseReceived);
+			new thread_receive().start();
+			
+			//Receive UDPs from all other users
+			//byte[] buffer = new byte[100];
+	    	//DatagramPacket paquetSerialiseReceived = new DatagramPacket(buffer,buffer.length);
+	    	//socket.receive(paquetSerialiseReceived);
 
-	    	Paquet paquetDeserialiseReceived = SerializationUtils.deserialize(buffer);
+	    	//Paquet paquetDeserialiseReceived = SerializationUtils.deserialize(buffer);
 	    	
-	    	System.out.println(paquetDeserialiseReceived.type.name() + paquetDeserialiseReceived.pseudo);
+	    	//System.out.println(paquetDeserialiseReceived.type.name() + paquetDeserialiseReceived.pseudo);
 	    	socket.close();
 		} catch (Exception e) {e.printStackTrace();}
 		
@@ -73,4 +74,5 @@ public class User {
 		User1.connect();
 		
 	}
+
 }

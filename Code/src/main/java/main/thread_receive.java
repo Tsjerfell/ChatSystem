@@ -27,8 +27,8 @@ class thread_receive extends Thread {
 				byte[] buffer = new byte[100];
 				DatagramPacket packet = new DatagramPacket(buffer,buffer.length);
 				mSocket.receive(packet);
-				
-				new ThreadTraitementPaquet(packet);
+				System.out.print("received something");
+				new ThreadTraitementPaquet(packet).start();
 				
 				} catch (UnknownHostException e) {
 					// TODO Auto-generated catch block
