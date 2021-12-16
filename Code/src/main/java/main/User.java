@@ -15,15 +15,13 @@ import connect.otherUser;
 import connect.Paquet;
 import connect.ThreadProperIPAddress;
 import connect.TypedePaquet;
-//ArrayList<otherUser> listOtherUsers = new ArrayList<otherUser>(); 
-
-
 
 public class User {
 	public String addressIP;
 	public int addressMac;
 	public String pseudo;
 	MulticastSocket mSocket;
+	ArrayList<otherUser> listOtherUsers = new ArrayList<otherUser>();
 
 	
 	public User(int addressMac, String psuedo) throws UnknownHostException, SocketException {	
@@ -51,7 +49,7 @@ public class User {
 		    DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 3456);
 			socket.send(datagramPacket);
 			
-			System.out.print(addressIP);
+			System.out.print("Mon adresse IP est: "+addressIP);
 			new thread_receive().start();
 			
 			//Receive UDPs from all other users

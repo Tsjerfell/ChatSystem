@@ -38,23 +38,20 @@ public class ThreadTraitementPaquet extends Thread{
 	    	DatagramPacket datagramPaquetDeResponse = new DatagramPacket(bufferResponse, bufferResponse.length, packet.getSocketAddress());
 	    	try {
 				DatagramSocket socket = new DatagramSocket();
-				System.out.print(packet.getSocketAddress());
+				
 				socket.connect(packet.getSocketAddress());
 				socket.send(datagramPaquetDeResponse);
 				socket.close();
-				System.out.print("paquet Envoie");
+				System.out.print("paquet Envoie à " + packet.getSocketAddress());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	    	
-	    	
-	    	
+	    		    	
 	    } else if (paquetDeserialiseReceived.type ==  TypedePaquet.AckConnexion) {
 	    	
 	    	System.out.print("J'ai recois un paquet de " + paquetDeserialiseReceived.pseudo);
-	    	
-	    	
+	    		    	
 		} else {
 	    	System.out.print("On n'a pas traité ce cas");
 	    }
