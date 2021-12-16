@@ -23,11 +23,10 @@ class thread_receive extends Thread {
 				MulticastSocket mSocket = new MulticastSocket(3456);		   
 				mSocket.joinGroup(group);
 				
-				//on n'est pas sûr 100 suffit
-				byte[] buffer = new byte[100];
+				//on n'est pas sûr 100 suffit, ca suffisait pas, mais 2000 peut etre?
+				byte[] buffer = new byte[2000];
 				DatagramPacket packet = new DatagramPacket(buffer,buffer.length);
 				mSocket.receive(packet);
-				System.out.print("received something");
 				new ThreadTraitementPaquet(packet).start();
 				
 				} catch (UnknownHostException e) {
