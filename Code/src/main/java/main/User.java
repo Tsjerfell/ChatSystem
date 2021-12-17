@@ -21,7 +21,7 @@ public class User {
 	public int addressMac;
 	public String pseudo;
 	MulticastSocket mSocket;
-	ArrayList<otherUser> listOtherUsers = new ArrayList<otherUser>();
+	ArrayList<otherUser> listOtherUsers = new ArrayList<>();
 
 	
 	public User(int addressMac, String psuedo) throws UnknownHostException, SocketException {	
@@ -36,8 +36,6 @@ public class User {
 		
 	public void connect() {		
 		try {
-			ThreadProperIPAddress ThreadOwnIP = new ThreadProperIPAddress();
-			ThreadOwnIP.start();
 			
 		    InetAddress group = InetAddress.getByName("225.6.7.8");
 		    MulticastSocket socket = new MulticastSocket();
@@ -49,7 +47,9 @@ public class User {
 		    DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 3456);
 			socket.send(datagramPacket);
 			
-			System.out.print("Mon adresse IP est: " + addressIP);
+			ThreadProperIPAddress ThreadOwnIP = new ThreadProperIPAddress();
+			ThreadOwnIP.start();
+					
 			new thread_receive().start();
 			
 			//Receive UDPs from all other users
@@ -81,6 +81,7 @@ public class User {
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		Main newMain = new Main();
 		Main.pseudo="Erik";
+		
 		System.setProperty("java.net.preferIPv4Stack","true");
 		User User1 = new User(1234,"Erik");
 		User1.connect();

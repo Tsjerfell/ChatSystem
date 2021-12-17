@@ -29,7 +29,7 @@ public class ThreadTraitementPaquet extends Thread{
     	Paquet paquetDeserialiseReceived = SerializationUtils.deserialize(buffer);
 	
 	    if(paquetDeserialiseReceived.type ==  TypedePaquet.Connexion) {
-	    	System.out.println("Je viens de me connecter et je m'appele " + paquetDeserialiseReceived.pseudo + " et mon address ip est " + paquetDeserialiseReceived.contenu);
+	    	System.out.println("J'ai reçu: Je viens de me connecter et je m'appele " + paquetDeserialiseReceived.pseudo + " et mon address ip est " + paquetDeserialiseReceived.contenu);
 	    	
 	    	//construction du paquet de response
 	    	

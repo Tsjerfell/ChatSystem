@@ -11,7 +11,7 @@ public class Main {
 	public static String pseudo;
 	public static int addressMac;
 	public static String addressIP;
-	public static ArrayList<otherUser> listOtherConnectedUsers;
+	public static ArrayList<otherUser> listOtherConnectedUsers = new ArrayList<otherUser>();
 	
 	public Main() {
 	}
