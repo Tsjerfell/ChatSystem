@@ -37,20 +37,23 @@ public class ThreadTraitementPaquet extends Thread{
 	    	byte[] bufferResponse = SerializationUtils.serialize(PaquetResponse);
 	    	DatagramPacket datagramPaquetDeResponse = new DatagramPacket(bufferResponse, bufferResponse.length, packet.getAddress(),3457);
 	    	try {
-				DatagramSocket socket = new DatagramSocket();
-				
-				socket.connect(packet.getSocketAddress());
+				DatagramSocket socket = new DatagramSocket();								
 				socket.send(datagramPaquetDeResponse);
 				socket.close();
 				System.out.print("paquet Envoie à " + packet.getAddress());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	    		    	
 	    } else if (paquetDeserialiseReceived.type ==  TypedePaquet.AckConnexion) {
+	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.adressMac,paquetDeserialiseReceived.pseudo);
+	    	Main.addNewUser(NewUser);
 	    	
-	    	System.out.print("J'ai recois un paquet de " + paquetDeserialiseReceived.pseudo);
+	    	System.out.println("J'ai reçu un paquet de " + paquetDeserialiseReceived.pseudo);
+	    	System.out.println("Ce qui sont connecté:");
+	    	for (int i = 0; i < Main.listOtherConnectedUsers.size();i++) {
+	    		System.out.println(Main.listOtherConnectedUsers.get(i).pseudo);
+	    	}
 	    		    	
 		} else {
 	    	System.out.print("On n'a pas traité ce cas");

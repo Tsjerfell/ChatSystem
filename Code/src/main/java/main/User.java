@@ -77,12 +77,10 @@ public class User {
 		return 0;
 	}
 	
-	public void addOtherUser(String psuedo, int AdresseMacc) {
-		
-	};
 
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		Main newMain = new Main();
+		Main.pseudo="Erik";
 		System.setProperty("java.net.preferIPv4Stack","true");
 		User User1 = new User(1234,"Erik");
 		User1.connect();

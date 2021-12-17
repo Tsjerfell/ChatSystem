@@ -16,6 +16,9 @@ public class Main {
 	public Main() {
 	}
 	
+	public static synchronized void addNewUser(otherUser theotherUser) {
+			listOtherConnectedUsers.add(theotherUser);		
+	}
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		System.setProperty("java.net.preferIPv4Stack","true");
 		User User1 = new User(1234,"Hoplahopla");
