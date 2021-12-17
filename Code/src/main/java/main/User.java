@@ -49,7 +49,7 @@ public class User {
 		    DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 3456);
 			socket.send(datagramPacket);
 			
-			System.out.print("Mon adresse IP est: "+addressIP);
+			System.out.print("Mon adresse IP est: " + addressIP);
 			new thread_receive().start();
 			
 			//Receive UDPs from all other users

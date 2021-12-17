@@ -35,14 +35,14 @@ public class ThreadTraitementPaquet extends Thread{
 	    	
 	    	Paquet PaquetResponse = new Paquet(TypedePaquet.AckConnexion, Main.addressMac, Main.pseudo,Main.addressIP);
 	    	byte[] bufferResponse = SerializationUtils.serialize(PaquetResponse);
-	    	DatagramPacket datagramPaquetDeResponse = new DatagramPacket(bufferResponse, bufferResponse.length, packet.getSocketAddress());
+	    	DatagramPacket datagramPaquetDeResponse = new DatagramPacket(bufferResponse, bufferResponse.length, packet.getAddress(),3457);
 	    	try {
 				DatagramSocket socket = new DatagramSocket();
 				
 				socket.connect(packet.getSocketAddress());
 				socket.send(datagramPaquetDeResponse);
 				socket.close();
-				System.out.print("paquet Envoie à " + packet.getSocketAddress());
+				System.out.print("paquet Envoie à " + packet.getAddress());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
