@@ -44,7 +44,7 @@ public class User {
 		    SerializationUtils SerializationUtils = new SerializationUtils(); 		    
 		    byte[] paquetSerialise = SerializationUtils.serialize(paquetNonSerialise);
 		    
-		    DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 3456);
+		    DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 12345);
 			socket.send(datagramPacket);
 			
 			ThreadProperIPAddress ThreadOwnIP = new ThreadProperIPAddress();
@@ -60,23 +60,12 @@ public class User {
 	    	//Paquet paquetDeserialiseReceived = SerializationUtils.deserialize(buffer);
 	    	
 	    	//System.out.println(paquetDeserialiseReceived.type.name() + paquetDeserialiseReceived.pseudo);
-	    	socket.close();
+
 		} catch (Exception e) {e.printStackTrace();}
 		
     	
 	}
-	
-	
-	public int recevoirPaquet(Paquet paquet) {
-		if (paquet.type == TypedePaquet.Message ) {
-			return 0;
-		} else if (paquet.type == TypedePaquet.Connexion){
-			
-		}
 		
-		return 0;
-	}
-	
 
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		Main newMain = new Main();

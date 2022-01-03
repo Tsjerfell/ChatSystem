@@ -35,7 +35,7 @@ public class ThreadTraitementPaquet extends Thread{
 	    	
 	    	Paquet PaquetResponse = new Paquet(TypedePaquet.AckConnexion, Main.addressMac, Main.pseudo,Main.addressIP);
 	    	byte[] bufferResponse = SerializationUtils.serialize(PaquetResponse);
-	    	DatagramPacket datagramPaquetDeResponse = new DatagramPacket(bufferResponse, bufferResponse.length, packet.getAddress(),3457);
+	    	DatagramPacket datagramPaquetDeResponse = new DatagramPacket(bufferResponse, bufferResponse.length, packet.getAddress(),12346);
 	    	try {
 				DatagramSocket socket = new DatagramSocket();								
 				socket.send(datagramPaquetDeResponse);
@@ -46,7 +46,7 @@ public class ThreadTraitementPaquet extends Thread{
 			}
 	    		    	
 	    } else if (paquetDeserialiseReceived.type ==  TypedePaquet.AckConnexion) {
-	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.adressMac,paquetDeserialiseReceived.pseudo);
+	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.adressMac,paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	Main.addNewUser(NewUser);
 	    	
 	    	System.out.println("J'ai reçu un paquet de " + paquetDeserialiseReceived.pseudo);
@@ -54,8 +54,10 @@ public class ThreadTraitementPaquet extends Thread{
 	    	for (int i = 0; i < Main.listOtherConnectedUsers.size();i++) {
 	    		System.out.println(Main.listOtherConnectedUsers.get(i).pseudo);
 	    	}
-	    		    	
-		} else {
+	    } else if (paquetDeserialiseReceived.type ==  TypedePaquet.ChangementdePseudo) {
+	    	System.out.print("Changement de paquet,mais pas traité");
+	    	
+	    } else {
 	    	System.out.print("On n'a pas traité ce cas");
 	    }
 	

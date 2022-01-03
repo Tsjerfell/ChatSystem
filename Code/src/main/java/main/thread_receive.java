@@ -13,14 +13,12 @@ class thread_receive extends Thread {
 	  public thread_receive () {   
 	  } 
 	  
-	  
-	  @SuppressWarnings("resource")
 	public void run() {  
 	    while(true) {
 	    	InetAddress group = null;
 			try {
 				group = InetAddress.getByName("225.6.7.8");
-				MulticastSocket mSocket = new MulticastSocket(3456);		   
+				MulticastSocket mSocket = new MulticastSocket(12345);		   
 				mSocket.joinGroup(group);
 				
 				//on n'est pas sûr 100 suffit, ca suffisait pas, mais 2000 peut etre?

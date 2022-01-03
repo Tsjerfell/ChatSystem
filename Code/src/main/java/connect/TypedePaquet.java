@@ -1,9 +1,9 @@
 package connect;
 
 public enum TypedePaquet {
-	Message,
 	Connexion,
+	AckConnexion,
 	Deconnexion,
 	ChangementdePseudo,
-	AckConnexion
+	
 }
