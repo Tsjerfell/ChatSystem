@@ -35,6 +35,14 @@ public class ThreadTraitementPaquet extends Thread{
     		
 	    	System.out.println("J'ai reçu: Je viens de me connecter et je m'appele " + paquetDeserialiseReceived.pseudo + " et mon address ip est " + paquetDeserialiseReceived.contenu);
 	    	
+	    	//ajoute du nouveau User
+	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.adressMac,paquetDeserialiseReceived.pseudo,packet.getAddress());
+	    	Main.addNewUser(NewUser);
+	    	System.out.println("Ce qui sont connecté:");
+	    	for (int i = 0; i < Main.listOtherConnectedUsers.size();i++) {
+	    		System.out.println(Main.listOtherConnectedUsers.get(i).pseudo);
+	    	}
+	    	
 	    	//construction du paquet de response
 	    	
 	    	Paquet PaquetResponse = new Paquet(TypedePaquet.AckConnexion, Main.addressMac, Main.pseudo,Main.addressIP);
