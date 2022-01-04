@@ -1,5 +1,6 @@
 package main;
 
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -14,7 +15,14 @@ public class Main {
 	public static String addressIP;
 	public static ArrayList<otherUser> listOtherConnectedUsers = new ArrayList<otherUser>();
 	
-	public Main() {
+	public Main(String pseudo,int addressMac) throws SocketException, UnknownHostException {
+		this.addressMac = addressMac;
+		this.pseudo = pseudo;
+		
+	    try(final DatagramSocket socketForIP = new DatagramSocket()){
+	    	  socketForIP.connect(InetAddress.getByName("8.8.8.8"), 10002);
+	    	  this.addressIP = socketForIP.getLocalAddress().getHostAddress();
+	    	} 
 	}
 	
 	public static synchronized void addNewUser(otherUser theotherUser) {
@@ -28,7 +36,9 @@ public class Main {
 	
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		System.setProperty("java.net.preferIPv4Stack","true");
-		User User1 = new User(1234,"Hoplahopla");
+		Main newMain = new Main("Erik",1234); //l'addressMac n'a actuellement aucun importance
+		
+		User User1 = new User();
 		User1.connect();
 		
 	}

@@ -24,14 +24,7 @@ public class User {
 	ArrayList<otherUser> listOtherUsers = new ArrayList<>();
 
 	
-	public User(int addressMac, String psuedo) throws UnknownHostException, SocketException {	
-		this.addressMac = addressMac;
-		this.pseudo = psuedo;
-		
-	    try(final DatagramSocket socketForIP = new DatagramSocket()){
-	    	  socketForIP.connect(InetAddress.getByName("8.8.8.8"), 10002);
-	    	  this.addressIP = socketForIP.getLocalAddress().getHostAddress();
-	    	} 
+	public User() {	 
 	}
 		
 	public void connect() {		
@@ -39,8 +32,9 @@ public class User {
 			
 		    InetAddress group = InetAddress.getByName("225.6.7.8");
 		    MulticastSocket socket = new MulticastSocket();
+		    new thread_receive().start();
 		    
-		    Paquet paquetNonSerialise = new Paquet(TypedePaquet.Connexion,addressMac,pseudo,addressIP);
+		    Paquet paquetNonSerialise = new Paquet(TypedePaquet.Connexion,Main.addressMac,Main.pseudo,Main.addressIP);
 		    SerializationUtils SerializationUtils = new SerializationUtils(); 		    
 		    byte[] paquetSerialise = SerializationUtils.serialize(paquetNonSerialise);
 		    
@@ -50,7 +44,7 @@ public class User {
 			ThreadProperIPAddress ThreadOwnIP = new ThreadProperIPAddress();
 			ThreadOwnIP.start();
 					
-			new thread_receive().start();
+			
 			
 			//Receive UDPs from all other users
 			//byte[] buffer = new byte[100];
@@ -64,17 +58,6 @@ public class User {
 		} catch (Exception e) {e.printStackTrace();}
 		
     	
-	}
-		
-
-	public static void main (String[] args) throws UnknownHostException, SocketException {
-		Main newMain = new Main();
-		Main.pseudo="Erik";
-		
-		System.setProperty("java.net.preferIPv4Stack","true");
-		User User1 = new User(1234,"Erik");
-		User1.connect();
-		
 	}
 
 }
