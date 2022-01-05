@@ -7,24 +7,27 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import connect.otherUser;
+import main.Main;
+
 public class ThreadManagerSender{
-		public int prochainPort = 12348;
+		
 	
-		public void startConversation() throws UnknownHostException, IOException {
+		public void startConversation() throws UnknownHostException, IOException { //Ajoute comme paramettre otherUser otherUser
 						
-			new TCPthreadSend(prochainPort).start();
+			new TCPthreadSend(Main.prochainPort).start();
 			
-			Socket socket =new Socket("10.1.5.11",12347); 
+			Socket socket =new Socket("10.1.5.11",12347); //Change l'addresseIP en otherUSer.addresseIP
 			BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-			output.println("10.1.5.12");
-			output.println(String.valueOf(prochainPort));
+			output.println(Main.addressIP);
+			output.println(String.valueOf(Main.prochainPort));
 			
-			prochainPort++;
+			Main.augmentePortNumber();
 		}
 		
 		public static void main (String[] args) throws UnknownHostException, IOException {
 			ThreadManagerSender test1 = new ThreadManagerSender();
-			test1.startConversation();			
+			//test1.startConversation();			
 		}
 }

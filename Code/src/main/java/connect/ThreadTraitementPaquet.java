@@ -27,25 +27,22 @@ public class ThreadTraitementPaquet extends Thread{
 		SerializationUtils SerializationUtils = new SerializationUtils();
 		byte[] buffer = packet.getData();
     	Paquet paquetDeserialiseReceived = SerializationUtils.deserialize(buffer);
+		
+    	//Pour veifier dans le if
+    	String addressIPEnString = String.valueOf(packet.getAddress());
     	
-    	
-    	if (paquetDeserialiseReceived.pseudo.equals(Main.pseudo)) {
+    	if (addressIPEnString.equals(Main.addressIP) || paquetDeserialiseReceived.pseudo.equals(Main.pseudo)) {
     		//On ne fait rien parce qu'on vient de recevoir notre propre paquet
     	} else if(paquetDeserialiseReceived.type ==  TypedePaquet.Connexion) {
     		
-	    	System.out.println("J'ai reçu: Je viens de me connecter et je m'appele " + paquetDeserialiseReceived.pseudo + " et mon address ip est " + paquetDeserialiseReceived.contenu);
 	    	
 	    	//ajoute du nouveau User
-	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.adressMac,paquetDeserialiseReceived.pseudo,packet.getAddress());
+	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	Main.addNewUser(NewUser);
-	    	System.out.println("Ce qui sont connecté:");
-	    	for (int i = 0; i < Main.listOtherConnectedUsers.size();i++) {
-	    		System.out.println(Main.listOtherConnectedUsers.get(i).pseudo);
-	    	}
 	    	
 	    	//construction du paquet de response
 	    	
-	    	Paquet PaquetResponse = new Paquet(TypedePaquet.AckConnexion, Main.addressMac, Main.pseudo,Main.addressIP);
+	    	Paquet PaquetResponse = new Paquet(TypedePaquet.AckConnexion, Main.pseudo,Main.addressIP);
 	    	byte[] bufferResponse = SerializationUtils.serialize(PaquetResponse);
 	    	DatagramPacket datagramPaquetDeResponse = new DatagramPacket(bufferResponse, bufferResponse.length, packet.getAddress(),12346);
 	    	//System.out.println(packet.getAddress());
@@ -59,23 +56,17 @@ public class ThreadTraitementPaquet extends Thread{
 			}
 	    		    	
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.AckConnexion) {
-	    	//System.out.println(paquetDeserialiseReceived.type);
-	    	System.out.println("J'ai reçu un paquet de " + paquetDeserialiseReceived.pseudo);
+	    	//System.out.println(paquetDeserialiseReceived.type);;
 	    	
-	    	
-	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.adressMac,paquetDeserialiseReceived.pseudo,packet.getAddress());
+	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	Main.addNewUser(NewUser);
-	    	System.out.println("Ce qui sont connecté:");
-	    	for (int i = 0; i < Main.listOtherConnectedUsers.size();i++) {
-	    		System.out.println(Main.listOtherConnectedUsers.get(i).pseudo);
-	    	}
+	    		    	
+	    } else if (paquetDeserialiseReceived.type == TypedePaquet.ChangementdePseudo) {
+			
+    		Main.changePsuedoOtherUser(paquetDeserialiseReceived.pseudo, paquetDeserialiseReceived.contenu, packet.getAddress());  
+
+	    } else { //Deconnexion
 	    	
-	    	
-	    } else if (paquetDeserialiseReceived.type ==  TypedePaquet.ChangementdePseudo) {
-	    	System.out.print("Changement de paquet,mais pas traité");
-	    	
-	    } else {
-	    	System.out.print("On n'a pas traité ce cas");
 	    }
 	
 	}    

@@ -2,6 +2,7 @@ package main;
 
 import org.apache.commons.lang3.SerializationUtils;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -34,7 +35,7 @@ public class User {
 		    MulticastSocket socket = new MulticastSocket();
 		    new thread_receive().start();
 		    
-		    Paquet paquetNonSerialise = new Paquet(TypedePaquet.Connexion,Main.addressMac,Main.pseudo,Main.addressIP);
+		    Paquet paquetNonSerialise = new Paquet(TypedePaquet.Connexion,Main.pseudo,Main.addressIP);
 		    SerializationUtils SerializationUtils = new SerializationUtils(); 		    
 		    byte[] paquetSerialise = SerializationUtils.serialize(paquetNonSerialise);
 		    
@@ -43,21 +44,49 @@ public class User {
 			
 			ThreadProperIPAddress ThreadOwnIP = new ThreadProperIPAddress();
 			ThreadOwnIP.start();
-					
 			
-			
-			//Receive UDPs from all other users
-			//byte[] buffer = new byte[100];
-	    	//DatagramPacket paquetSerialiseReceived = new DatagramPacket(buffer,buffer.length);
-	    	//socket.receive(paquetSerialiseReceived);
-
-	    	//Paquet paquetDeserialiseReceived = SerializationUtils.deserialize(buffer);
-	    	
-	    	//System.out.println(paquetDeserialiseReceived.type.name() + paquetDeserialiseReceived.pseudo);
-
+			socket.close(); //Might bug
+							
 		} catch (Exception e) {e.printStackTrace();}
-		
     	
 	}
-
+	
+	public void changementPseudo(String nouveauPseudo) throws UnknownHostException {
+		
+		
+	    try {
+	    	InetAddress group = InetAddress.getByName("225.6.7.8");
+			MulticastSocket socket = new MulticastSocket();
+			SerializationUtils SerializationUtils = new SerializationUtils(); 	
+			
+			Paquet paquetNonSerialise = new Paquet(TypedePaquet.ChangementdePseudo,Main.pseudo,nouveauPseudo);
+			byte[] paquetSerialise = SerializationUtils.serialize(paquetNonSerialise);
+			DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 12345);
+			
+			socket.send(datagramPacket);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Main.pseudo = nouveauPseudo;
+	}
+	
+	public void deconnect() {
+	    try {
+	    	InetAddress group = InetAddress.getByName("225.6.7.8");
+			MulticastSocket socket = new MulticastSocket();
+			SerializationUtils SerializationUtils = new SerializationUtils(); 	
+			
+			Paquet paquetNonSerialise = new Paquet(TypedePaquet.Deconnexion,Main.pseudo,Main.addressIP);
+			byte[] paquetSerialise = SerializationUtils.serialize(paquetNonSerialise);
+			DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 12345);
+			
+			socket.send(datagramPacket);
+	    } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

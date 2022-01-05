@@ -22,7 +22,7 @@ public class TCPthreadSend extends Thread{
 			
 			BufferedReader input  = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 			PrintWriter output = new PrintWriter(soc.getOutputStream(), true);
-			System.out.println("Connected");
+			output.println("Connected");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

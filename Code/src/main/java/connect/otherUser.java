@@ -4,12 +4,10 @@ import java.net.InetAddress;
 
 public class otherUser {
 	
-	public int addressMac;
 	public String pseudo;
 	public InetAddress addressIP;
 	
-	public otherUser(int addressMac, String pseudo, InetAddress addressIP) {
-		this.addressMac = addressMac;
+	public otherUser(String pseudo, InetAddress addressIP) {
 		this.pseudo = pseudo;
 		this.addressIP = addressIP;
 	}
