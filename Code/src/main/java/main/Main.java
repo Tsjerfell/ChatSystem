@@ -37,7 +37,6 @@ public class Main {
 	public static synchronized void changePsuedoOtherUser(String oldPseudo, String newPseudo,InetAddress addressIP) {
 		//int i = listOtherConnectedUsers.indexOf(new otherUser(oldPseudo, addressIP));
 		//listOtherConnectedUsers.get(i).setPseudo(newPseudo);
-		int i = 0;
 		for (otherUser otherUser : listOtherConnectedUsers) {
 			if (otherUser.addressIP.equals(addressIP)) {
 				otherUser.pseudo = newPseudo;
@@ -46,27 +45,19 @@ public class Main {
 		
 	}
 	public static void printUsers() {
+		System.out.println("Ceux qui sont connecté:");
 		for (otherUser otherUser : listOtherConnectedUsers) {			
-				System.out.println(otherUser.pseudo);
+				System.out.println("	"+otherUser.pseudo);
+				System.out.println("	"+otherUser.addressIP);
 		}
 	}
 	
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		System.setProperty("java.net.preferIPv4Stack","true");
-		Main newMain = new Main("ErikVenstre"); //l'addressMac n'a actuellement aucun importance
+		Main newMain = new Main("ErikVenstre"); //l'addressMac n'existe plus
 		
 		User User1 = new User();
-		User1.connect();
-		
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		User1.changementPseudo("NewNameVenstre");
-		
-		Main.printUsers();
+		User1.connect();	
 		
 	}
 }

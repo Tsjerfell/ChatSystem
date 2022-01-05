@@ -35,7 +35,7 @@ public class ThreadTraitementPaquet extends Thread{
     		//On ne fait rien parce qu'on vient de recevoir notre propre paquet
     	} else if(paquetDeserialiseReceived.type ==  TypedePaquet.Connexion) {
     		
-	    	
+	    	System.out.println(paquetDeserialiseReceived.pseudo + " vient de se connecter");
 	    	//ajoute du nouveau User
 	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	Main.addNewUser(NewUser);
@@ -62,11 +62,27 @@ public class ThreadTraitementPaquet extends Thread{
 	    	Main.addNewUser(NewUser);
 	    		    	
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.ChangementdePseudo) {
-			
+	    	System.out.println(paquetDeserialiseReceived.pseudo + " a changé son nom à " + paquetDeserialiseReceived.contenu);
     		Main.changePsuedoOtherUser(paquetDeserialiseReceived.pseudo, paquetDeserialiseReceived.contenu, packet.getAddress());  
 
-	    } else { //Deconnexion
+	    } else if (paquetDeserialiseReceived.type == TypedePaquet.Deconnexion){
 	    	
+	    	int i = 0;
+			for (otherUser otherUser : Main.listOtherConnectedUsers) {
+				if (otherUser.addressIP.equals(packet.getAddress())) {
+					i = Main.listOtherConnectedUsers.indexOf(otherUser);
+				}
+			}
+			Main.listOtherConnectedUsers.remove(i);
+		
+	    	//otherUser onvaEnlever = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
+	    	//Main.listOtherConnectedUsers.remove(onvaEnlever);
+	    	
+	    	System.out.println(paquetDeserialiseReceived.pseudo +" vient de se deconnecter");
+	    	Main.printUsers();
+			
+	    } else { //Ca vient pas de nous 
+	    	System.out.print("C'est qoui ce paquet?");
 	    }
 	
 	}    
