@@ -12,7 +12,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import connect.otherUser; 
+import connect.otherUser;
+import connect.ThreadReceiveUDPMulitcast;
 import connect.Paquet;
 import connect.ThreadProperIPAddress;
 import connect.TypedePaquet;
@@ -32,7 +33,7 @@ public class User {
 			
 		    InetAddress group = InetAddress.getByName("225.6.7.8");
 		    MulticastSocket socket = new MulticastSocket();
-		    new thread_receive().start();
+		    new ThreadReceiveUDPMulitcast().start();
 		    
 		    Paquet paquetNonSerialise = new Paquet(TypedePaquet.Connexion,Main.pseudo,Main.addressIP);
 		    SerializationUtils SerializationUtils = new SerializationUtils(); 		    

@@ -6,6 +6,10 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
+import Interface.Visuel;
+import chatting.ThreadManagerSender;
 import connect.otherUser;
 
 public class Main {
@@ -48,16 +52,45 @@ public class Main {
 		System.out.println("Ceux qui sont connecté:");
 		for (otherUser otherUser : listOtherConnectedUsers) {			
 				System.out.println("	"+otherUser.pseudo);
-				System.out.println("	"+otherUser.addressIP);
 		}
 	}
-	
+		
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		System.setProperty("java.net.preferIPv4Stack","true");
 		Main newMain = new Main("ErikVenstre"); //l'addressMac n'existe plus
 		
-		User User1 = new User();
-		User1.connect();	
+		InetAddress addr1 =  InetAddress.getByName("127.0.0.1");
+		otherUser otherUser1 = new otherUser("User1",addr1);
+		Main.listOtherConnectedUsers.add(otherUser1);				
 		
+		JFrame Frame = new JFrame();		
+		Visuel interface1 = new Visuel(Frame);
+		interface1.run();
+		
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//		// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		InetAddress addr2 =  InetAddress.getByName("127.0.0.1");
+		otherUser otherUser2 = new otherUser("User2",addr2);
+		Main.listOtherConnectedUsers.add(otherUser2);
+		interface1.updateConnectedUsers();
+		
+		User User1 = new User();
+		User1.connect();		
+		
+
+		
+		for (otherUser otherUser : Main.listOtherConnectedUsers)
+		{System.out.println(otherUser.pseudo);}
+		
+		interface1.setVisible(true);
+		System.out.print("Fini");
+		
+		
+	
 	}
 }

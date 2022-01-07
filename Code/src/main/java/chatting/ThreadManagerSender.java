@@ -10,24 +10,30 @@ import java.net.UnknownHostException;
 import connect.otherUser;
 import main.Main;
 
-public class ThreadManagerSender{
+public class ThreadManagerSender extends Thread{
+		public otherUser otherUser;
 		
-	
-		public void startConversation() throws UnknownHostException, IOException { //Ajoute comme paramettre otherUser otherUser
+		public ThreadManagerSender(otherUser otherUser) {
+			this.otherUser = otherUser;
+		}
+		
+		public void run() { 
 						
-			new TCPthreadSend(Main.prochainPort).start();
+			new TCPthreadSend(Main.prochainPort).start();			
 			
-			Socket socket =new Socket("10.1.5.11",12347); //Change l'addresseIP en otherUSer.addresseIP
-			BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-			output.println(Main.addressIP);
-			output.println(String.valueOf(Main.prochainPort));
-			
+			Socket socket;
+			try {
+				socket = new Socket(this.otherUser.addressIP,12347);
+				BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+				output.println(Main.addressIP);
+				output.println(String.valueOf(Main.prochainPort));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			Main.augmentePortNumber();
+			
 		}
 		
-		public static void main (String[] args) throws UnknownHostException, IOException {
-			ThreadManagerSender test1 = new ThreadManagerSender();
-			//test1.startConversation();			
-		}
 }

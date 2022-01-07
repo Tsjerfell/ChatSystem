@@ -24,7 +24,7 @@ public class TCPthread extends Thread{
 				BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
 				
-				input.readLine();
+				
 				
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block

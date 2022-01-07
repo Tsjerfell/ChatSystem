@@ -1,4 +1,4 @@
-package main;
+package connect;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -6,11 +6,9 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
-import connect.ThreadTraitementPaquet;
-
-class thread_receive extends Thread {  
+public class ThreadReceiveUDPMulitcast extends Thread {  
 	 
-	  public thread_receive () {   
+	  public ThreadReceiveUDPMulitcast () {   
 	  } 
 	  
 	public void run() {  

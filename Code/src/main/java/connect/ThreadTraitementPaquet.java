@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.lang3.SerializationUtils;
 
+import Interface.Visuel;
 import connect.Paquet;
 import main.Main;
 
@@ -64,7 +65,7 @@ public class ThreadTraitementPaquet extends Thread{
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.ChangementdePseudo) {
 	    	System.out.println(paquetDeserialiseReceived.pseudo + " a changé son nom à " + paquetDeserialiseReceived.contenu);
     		Main.changePsuedoOtherUser(paquetDeserialiseReceived.pseudo, paquetDeserialiseReceived.contenu, packet.getAddress());  
-
+    		Visuel.updateConnectedUsers();
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.Deconnexion){
 	    	
 	    	int i = 0;

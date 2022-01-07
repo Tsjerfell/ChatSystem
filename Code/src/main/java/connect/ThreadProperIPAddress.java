@@ -10,19 +10,21 @@ public class ThreadProperIPAddress extends Thread {
 	public ThreadProperIPAddress() {}
 
 	public void run() {
-		try {
-			DatagramSocket Socket = new DatagramSocket(12346);
-			byte[] buffer = new byte[20000];
-			DatagramPacket packet = new DatagramPacket(buffer,buffer.length);
+		while(true) {
+			try {
+				DatagramSocket Socket = new DatagramSocket(12346);
+				byte[] buffer = new byte[20000];
+				DatagramPacket packet = new DatagramPacket(buffer,buffer.length);
 			
-			Socket.receive(packet);
+				Socket.receive(packet);
 			
-			new ThreadTraitementPaquet(packet).start();
-		}catch (UnknownHostException Exception) {			
-			Exception.printStackTrace();
+				new ThreadTraitementPaquet(packet).start();
+			}catch (UnknownHostException Exception) {			
+				Exception.printStackTrace();
 			
-		} catch (IOException Exception) {			
-			Exception.printStackTrace();
+			} catch (IOException Exception) {			
+				Exception.printStackTrace();
+			}
 		}
 	
 	}
