@@ -40,6 +40,7 @@ public class ThreadTraitementPaquet extends Thread{
 	    	//ajoute du nouveau User
 	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	Main.addNewUser(NewUser);
+	    	Visuel.updateConnectedUsers();
 	    	
 	    	//construction du paquet de response
 	    	
@@ -61,6 +62,7 @@ public class ThreadTraitementPaquet extends Thread{
 	    	
 	    	otherUser NewUser = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	Main.addNewUser(NewUser);
+	    	Visuel.updateConnectedUsers();
 	    		    	
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.ChangementdePseudo) {
 	    	System.out.println(paquetDeserialiseReceived.pseudo + " a changé son nom à " + paquetDeserialiseReceived.contenu);

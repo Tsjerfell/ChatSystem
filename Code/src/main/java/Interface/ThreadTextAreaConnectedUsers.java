@@ -6,10 +6,10 @@ import main.Main;
 public class ThreadTextAreaConnectedUsers implements Runnable{
 	
 	public void updateConnectedUsers() {
-		Visuel.textAreaconnectedUsers.setText("");
+		Visuel.textAreaConnectedUsers.setText("");		
 		
 		for(otherUser otherUser : Main.listOtherConnectedUsers){
-			Visuel.textAreaconnectedUsers.append(otherUser.pseudo +"\n");
+			Visuel.textAreaConnectedUsers.append(otherUser.pseudo +"\n");
 		}
 		
 	}

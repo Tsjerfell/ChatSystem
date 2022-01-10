@@ -33,6 +33,7 @@ public class User {
 			
 		    InetAddress group = InetAddress.getByName("225.6.7.8");
 		    MulticastSocket socket = new MulticastSocket();
+		    
 		    new ThreadReceiveUDPMulitcast().start();
 		    
 		    Paquet paquetNonSerialise = new Paquet(TypedePaquet.Connexion,Main.pseudo,Main.addressIP);
