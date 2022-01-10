@@ -69,7 +69,7 @@ public class ThreadTraitementPaquet extends Thread{
     		Main.changePsuedoOtherUser(paquetDeserialiseReceived.pseudo, paquetDeserialiseReceived.contenu, packet.getAddress());  
     		Visuel.updateConnectedUsers();
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.Deconnexion){
-	    	
+	    	System.out.println("Received deconnexion");
 	    	int i = 0;
 			for (otherUser otherUser : Main.listOtherConnectedUsers) {
 				if (otherUser.addressIP.equals(packet.getAddress())) {
@@ -82,7 +82,7 @@ public class ThreadTraitementPaquet extends Thread{
 	    	//Main.listOtherConnectedUsers.remove(onvaEnlever);
 	    	
 	    	System.out.println(paquetDeserialiseReceived.pseudo +" vient de se deconnecter");
-	    	Main.printUsers();
+	    	Visuel.updateConnectedUsers();
 			
 	    } else { //Ca vient pas de nous 
 	    	System.out.print("C'est qoui ce paquet?");

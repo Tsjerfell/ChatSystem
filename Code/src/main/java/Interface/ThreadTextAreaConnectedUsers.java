@@ -13,7 +13,6 @@ public class ThreadTextAreaConnectedUsers implements Runnable{
 		}
 		
 	}
-	
 		public void run() {
 			updateConnectedUsers();
 		}

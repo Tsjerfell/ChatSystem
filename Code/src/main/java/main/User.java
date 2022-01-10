@@ -52,52 +52,5 @@ public class User {
     	
 	}
 	
-	public void changementPseudo(String nouveauPseudo) throws UnknownHostException {
-		boolean AutreAvecMemeNom = false;
-		
-		for (otherUser otherUser : Main.listOtherConnectedUsers) {
-			if (otherUser.pseudo.equalsIgnoreCase(nouveauPseudo)) {
-				AutreAvecMemeNom = true;
-			}
-		}
-		if (AutreAvecMemeNom) {
-			System.out.println(nouveauPseudo +"est déjà utilisé par un autre uilisateur");
-		} else {
-		
-			try {
-				InetAddress group = InetAddress.getByName("225.6.7.8");
-				MulticastSocket socket = new MulticastSocket();
-				SerializationUtils SerializationUtils = new SerializationUtils(); 	
-			
-				Paquet paquetNonSerialise = new Paquet(TypedePaquet.ChangementdePseudo,Main.pseudo,nouveauPseudo);
-				byte[] paquetSerialise = SerializationUtils.serialize(paquetNonSerialise);
-				DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 12345);
-			
-				socket.send(datagramPacket);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Main.pseudo = nouveauPseudo;
-		}
-	}
-	
-	public void deconnect() {
-	    try {
-	    	InetAddress group = InetAddress.getByName("225.6.7.8");
-			MulticastSocket socket = new MulticastSocket();
-			SerializationUtils SerializationUtils = new SerializationUtils(); 	
-			
-			Paquet paquetNonSerialise = new Paquet(TypedePaquet.Deconnexion,Main.pseudo,Main.addressIP);
-			byte[] paquetSerialise = SerializationUtils.serialize(paquetNonSerialise);
-			DatagramPacket datagramPacket = new DatagramPacket(paquetSerialise,paquetSerialise.length, group, 12345);
-			
-			socket.send(datagramPacket);
-	    } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	
 }
