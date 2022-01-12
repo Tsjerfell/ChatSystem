@@ -16,6 +16,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import Interface.ThreadTextAreaConnectedUsers;
 import Interface.Visuel;
 import chatting.ThreadManagerSender;
+import chatting.otherUserTalkingTo;
 import connect.Paquet;
 import connect.TypedePaquet;
 import connect.otherUser;
@@ -25,7 +26,7 @@ public class Main {
 	public static String pseudo;
 	public static String addressIP;
 	public static ArrayList<otherUser> listOtherConnectedUsers = new ArrayList<otherUser>();
-	
+	public static ArrayList<otherUserTalkingTo> listotherUserTalkingTo = new ArrayList<otherUserTalkingTo>();
 	//Pour chatting
 	public static int prochainPort = 12348;
 	
@@ -114,8 +115,7 @@ public class Main {
 	
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		System.setProperty("java.net.preferIPv4Stack","true");
-		Main newMain = new Main("Erik"); //l'addressMac n'existe plus		
-		
+		Main newMain = new Main("Erikhoyere"); //l'addressMac n'existe plus		
 		User User1 = new User();
 		
 		

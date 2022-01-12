@@ -1,6 +1,10 @@
 package Interface;
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
+import chatting.ThreadManagerSender;
+import chatting.otherUserTalkingTo;
 import connect.otherUser;
 import main.Main;
 
@@ -11,6 +15,7 @@ import java.util.Vector;
 
 public class Visuel extends JPanel{
 	JFrame frame;
+	public static otherUserTalkingTo currentTalkingWith = new otherUserTalkingTo();
 	
 	//MainPanel
 	JPanel mainPanel;
@@ -30,6 +35,7 @@ public class Visuel extends JPanel{
 	JLabel textConnectedUsers;
 	public static JTextArea textAreaConnectedUsers;
 	JButton initConv;
+	int rowNumberConnectedUsers;
 	
 	//Pour les champs connecté à other users you are connected to
 	JLabel textHavingConv;
@@ -76,11 +82,15 @@ public class Visuel extends JPanel{
 			} );
 		
 		textChangementDePseudo = new JTextArea("You are yet to choose a username",30,1);
+		textChangementDePseudo.setEditable(false);
+		//textChangementDePseudo.getCaret().setVisible(true);
 		add(textChangementDePseudo);
 		textChangementDePseudo.setBounds (0, 25, 480, 25);
         
         //Pour convPanel
         textHistory = new JTextArea();
+        textHistory.setEditable(false);
+        //textHistory.getCaret().setVisible(true);
         add(textHistory);
         textHistory.setBounds (0, 50, 480, 410);
         
@@ -91,6 +101,16 @@ public class Visuel extends JPanel{
     	send = new JButton("send");
     	add(send);
     	send.setBounds (410, 460, 70, 25);
+    	send.addActionListener(new ActionListener() { 
+    		public void actionPerformed(ActionEvent e) {
+    			String command = e.getActionCommand();
+    			if (command.equals("send")) {   				   
+    				String messageAEnvoyer = message.getText();
+    				Visuel.currentTalkingWith.thread.sendMessage(messageAEnvoyer);
+    				
+    			}	
+    		}
+    	});
         
         //Pour connectedUsersPanel
     	pseudoLabel =  new JLabel("Current Connected Users:");
@@ -98,6 +118,37 @@ public class Visuel extends JPanel{
     	pseudoLabel.setBounds (480, 0, 420, 25);
     	
     	textAreaConnectedUsers = new JTextArea(4,4);
+    	//textAreaConnectedUsers.setEditable(false);
+    	textAreaConnectedUsers.getCaret().setVisible(true);
+    	textAreaConnectedUsers.addCaretListener(new CaretListener() {
+            // Each time the caret is moved, it will trigger the listener and its method caretUpdate.
+            // It will then pass the event to the update method including the source of the event (which is our textarea control)
+            public void caretUpdate(CaretEvent e) {
+                JTextArea editArea = (JTextArea)e.getSource();
+
+                // Lets start with some default values for the line and column.
+                rowNumberConnectedUsers = 0;
+                int columnnum = 1;
+
+                // We create a try catch to catch any exceptions. We will simply ignore such an error for our demonstration.
+                try {
+                    // First we find the position of the caret. This is the number of where the caret is in relation to the start of the JTextArea
+                    // in the upper left corner. We use this position to find offset values (eg what line we are on for the given position as well as
+                    // what position that line starts on.
+                    int caretpos = editArea.getCaretPosition();
+                    rowNumberConnectedUsers = editArea.getLineOfOffset(caretpos);
+
+                    // We subtract the offset of where our line starts from the overall caret position.
+                    // So lets say that we are on line 5 and that line starts at caret position 100, if our caret position is currently 106
+                    // we know that we must be on column 6 of line 5.
+
+                    // We have to add one here because line numbers start at 0 for getLineOfOffset and we want it to start at 1 for display.
+                    rowNumberConnectedUsers += 1;
+                }
+                catch(Exception ex) { }
+
+            }
+        });
     	add(textAreaConnectedUsers);
     	textAreaConnectedUsers.setBounds (480, 25, 415, 225);
     	
@@ -105,12 +156,28 @@ public class Visuel extends JPanel{
     	add(initConv);
     	initConv.setBounds (480, 250, 415, 25);
     	
+    	initConv.addActionListener(new ActionListener() { 
+    		public void actionPerformed(ActionEvent e) {
+    			String command = e.getActionCommand();
+    			if (command.equals("Initialize conversation with user clicked above")) {   				   
+    				otherUser ComWith = Main.listOtherConnectedUsers.get(rowNumberConnectedUsers-1);
+    				ThreadManagerSender thread = new ThreadManagerSender(ComWith);
+    				thread.start();
+    				
+    				
+    			}	
+    		}
+    	});
+
+    	
     	//Dans connectedUsersHavingConvPanel il y a
     	textHavingConv = new JLabel("Users your are currently having a conversation with:");
     	add(textHavingConv);
     	textHavingConv.setBounds (480, 275, 415, 25);
     	
     	textUsersHavingConnexionWith = new JTextArea(5,5);
+    	//textUsersHavingConnexionWith.setEditable(false);
+    	textUsersHavingConnexionWith.getCaret().setVisible(true);
     	add(textUsersHavingConnexionWith);
     	textUsersHavingConnexionWith.setBounds(480, 295, 415, 165);
     	

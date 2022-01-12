@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import Interface.Visuel;
 import connect.otherUser;
 import main.Main;
 
@@ -19,12 +20,17 @@ public class ThreadManagerSender extends Thread{
 		
 		public void run() { 
 						
-			new TCPthreadSend(Main.prochainPort).start();			
+			TCPthreadSend thread = new TCPthreadSend(Main.prochainPort);
+			thread.start();
 			
+			otherUserTalkingTo oUTT= new otherUserTalkingTo((otherUser.addressIP).toString().substring(1),thread);
+			Main.listotherUserTalkingTo.add(oUTT);
+			Visuel.currentTalkingWith = oUTT;
+					
 			Socket socket;
 			try {
 				socket = new Socket(this.otherUser.addressIP,12347);
-				BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				
 				PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
 				output.println(Main.addressIP);
 				output.println(String.valueOf(Main.prochainPort));

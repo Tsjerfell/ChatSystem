@@ -1,6 +1,9 @@
 package main;
 
 import org.apache.commons.lang3.SerializationUtils;
+
+import chatting.ThreadManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,8 +18,9 @@ import java.util.ArrayList;
 import connect.otherUser;
 import connect.ThreadReceiveUDPMulitcast;
 import connect.Paquet;
-import connect.ThreadProperIPAddress;
 import connect.TypedePaquet;
+import connect.ThreadProperIPAddress;
+
 
 public class User {
 	public String addressIP;
@@ -35,6 +39,8 @@ public class User {
 		    MulticastSocket socket = new MulticastSocket();
 		    
 		    new ThreadReceiveUDPMulitcast().start();
+		    new ThreadManager().start();
+		    new ThreadProperIPAddress().start();
 		    
 		    Paquet paquetNonSerialise = new Paquet(TypedePaquet.Connexion,Main.pseudo,Main.addressIP);
 		    SerializationUtils SerializationUtils = new SerializationUtils(); 		    
@@ -44,9 +50,10 @@ public class User {
 			socket.send(datagramPacket);
 			
 			ThreadProperIPAddress ThreadOwnIP = new ThreadProperIPAddress();
-			ThreadOwnIP.start();
+			
 			
 			socket.close(); //Might bug
+			
 							
 		} catch (Exception e) {e.printStackTrace();}
     	

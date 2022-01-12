@@ -9,23 +9,24 @@ import java.net.Socket;
 
 import main.Main;
 
-public class TCPthreadSend extends Thread{
+public class TCPthreadSend extends Thread implements TCPThread{
 	public int port;
+	public PrintWriter output;
 	
 	public TCPthreadSend(int port) {
 		this.port = port;
 	}
-	
+	public void sendMessage(String message) {
+		this.output.println(message);
+	}
 	public void run() {
 		ServerSocket serSoc;
 		try {
-			System.out.println(port);
-			System.out.println(Main.addressIP);
 			serSoc = new ServerSocket(port);
 			Socket soc = serSoc.accept();
 			
 			BufferedReader input  = new BufferedReader(new InputStreamReader(soc.getInputStream()));
-			PrintWriter output = new PrintWriter(soc.getOutputStream(), true);
+			this.output = new PrintWriter(soc.getOutputStream(), true);
 			
 			try {
 				Thread.sleep(2000);
@@ -34,9 +35,7 @@ public class TCPthreadSend extends Thread{
 				e.printStackTrace();
 			}
 			
-			System.out.println(input.readLine());
-			System.out.println(input.readLine());
-
+			output.println("Hello, how are you?");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
