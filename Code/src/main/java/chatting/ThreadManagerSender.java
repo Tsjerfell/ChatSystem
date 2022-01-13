@@ -23,9 +23,10 @@ public class ThreadManagerSender extends Thread{
 			TCPthreadSend thread = new TCPthreadSend(Main.prochainPort);
 			thread.start();
 			
-			otherUserTalkingTo oUTT= new otherUserTalkingTo((otherUser.addressIP).toString().substring(1),thread);
+			otherUserTalkingTo oUTT= new otherUserTalkingTo((otherUser.addressIP).toString().substring(1),thread,otherUser.pseudo);
 			Main.listotherUserTalkingTo.add(oUTT);
 			Visuel.currentTalkingWith = oUTT;
+			Visuel.updateUserHavingConvWith();
 					
 			Socket socket;
 			try {

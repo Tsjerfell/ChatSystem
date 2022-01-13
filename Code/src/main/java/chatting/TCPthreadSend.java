@@ -35,7 +35,15 @@ public class TCPthreadSend extends Thread implements TCPThread{
 				e.printStackTrace();
 			}
 			
-			output.println("Hello, how are you?");
+			String messageReceived = "";
+			while(true) {
+				messageReceived = input.readLine();
+				if (messageReceived == null) {
+					//on a rien reçu, donc on ne fait rien
+				} else {
+					System.out.println(messageReceived);
+				}
+			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -7,13 +7,16 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import Interface.Visuel;
+
 public class TCPthreadReceiver extends Thread implements TCPThread{
 	
 	public int port;
 	public String AddIP;
+	public PrintWriter output;
 	
-	public void sendMessage(String Message) {
-		System.out.println("Not yet implemented");
+	public void sendMessage(String message) {
+		this.output.println(message);
 	} 
 	
 		public TCPthreadReceiver(int port,String AddIP) {
@@ -26,7 +29,7 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 				Socket socket = new Socket(this.AddIP,this.port);
 				
 				BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+				this.output = new PrintWriter(socket.getOutputStream(), true);
 				
 				try {
 					Thread.sleep(3000);
@@ -35,7 +38,15 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 					e.printStackTrace();
 				}
 				
-				output.println("Hello! How are you?");
+				String messageReceived = "";
+				while(true) {
+					messageReceived = input.readLine();
+					if (messageReceived == null) {
+						//on a rien reçu, donc on ne fait rien
+					} else {
+						Visuel.addToHistoryField(messageReceived);
+					}
+				}
 				
 				
 			} catch (UnknownHostException e) {

@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import Interface.Visuel;
+import connect.otherUser;
+import main.Main;
+
 public class ThreadManager extends Thread{		
 	public ThreadManager(){}
 	
@@ -33,7 +37,18 @@ public class ThreadManager extends Thread{
 				System.out.println("Received port =" +portFormatString);
 				int portFormatInt = Integer.parseInt(portFormatString);
 				
-				new TCPthreadReceiver(portFormatInt, IP.substring(1)).start();
+				TCPthreadReceiver thread= new TCPthreadReceiver(portFormatInt, IP.substring(1));
+				thread.start();
+				String psuedoFound = "";
+				for (otherUser otheruser : Main.listOtherConnectedUsers) {
+					if (otheruser.addressIP.toString().substring(1).equals(IP.substring(1))){
+						psuedoFound = otheruser.pseudo;
+					}
+				}
+				otherUserTalkingTo oUTT= new otherUserTalkingTo(IP.substring(1),thread,psuedoFound);
+				Main.listotherUserTalkingTo.add(oUTT);
+				Visuel.currentTalkingWith = oUTT;
+				Visuel.updateUserHavingConvWith();
 				
 				socket.close();
 				
