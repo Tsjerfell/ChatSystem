@@ -10,7 +10,7 @@ public class ThreadWriteInUserConvWith implements Runnable{
 		Visuel.textUsersHavingConnexionWith.setText("");		
 		
 		for(otherUserTalkingTo otherUser : Main.listotherUserTalkingTo){
-			Visuel.textUsersHavingConnexionWith.append(otherUser.psuedo +"\n");
+			Visuel.textUsersHavingConnexionWith.append(otherUser.pseudo +"\n");
 		}
 		
 	}

@@ -39,19 +39,19 @@ public class ThreadManager extends Thread{
 				
 				TCPthreadReceiver thread= new TCPthreadReceiver(portFormatInt, IP.substring(1));
 				thread.start();
-				String psuedoFound = "";
+				String pseudoFound = "";
 				for (otherUser otheruser : Main.listOtherConnectedUsers) {
 					if (otheruser.addressIP.toString().substring(1).equals(IP.substring(1))){
-						psuedoFound = otheruser.pseudo;
+						pseudoFound = otheruser.pseudo;
 					}
 				}
-				otherUserTalkingTo oUTT= new otherUserTalkingTo(IP.substring(1),thread,psuedoFound);
+				otherUserTalkingTo oUTT= new otherUserTalkingTo(IP.substring(1),thread,pseudoFound);
 				Main.listotherUserTalkingTo.add(oUTT);
 				Visuel.currentTalkingWith = oUTT;
 				Visuel.updateUserHavingConvWith();
-				System.out.println("boobiba");
+
 				for (otherUserTalkingTo otheruser : Main.listotherUserTalkingTo) {
-					System.out.println(otheruser.psuedo);
+					System.out.println(otheruser.pseudo);
 				}
 				socket.close();
 				

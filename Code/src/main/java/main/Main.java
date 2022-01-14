@@ -80,7 +80,7 @@ public class Main {
 			listOtherConnectedUsers.add(theotherUser);		
 	}
 	
-	public static synchronized void changePsuedoOtherUser(String oldPseudo, String newPseudo,InetAddress addressIP) {
+	public static synchronized void changepseudoOtherUser(String oldPseudo, String newPseudo,InetAddress addressIP) {
 		
 		for (otherUser otherUser : listOtherConnectedUsers) {
 			if (otherUser.addressIP.equals(addressIP)) {
@@ -90,7 +90,7 @@ public class Main {
 		
 		for (otherUserTalkingTo otherUser : listotherUserTalkingTo) {
 			if (otherUser.addIP.equals(addressIP.toString().substring(1))) {
-				otherUser.psuedo = newPseudo;
+				otherUser.pseudo = newPseudo;
 			}
 		}
 		

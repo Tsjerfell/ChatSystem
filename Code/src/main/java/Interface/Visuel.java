@@ -75,9 +75,9 @@ public class Visuel extends JPanel{
 					e1.printStackTrace();
 				}
 			    if (memeNom) {
-			    	writeInPsuedoTextArea("Username amready taken by someone else");
+			    	writeInpseudoTextArea("Username amready taken by someone else");
 			    } else {
-			    	writeInPsuedoTextArea("Your username was changed to " + choosePseudo.getText());
+			    	writeInpseudoTextArea("Your username was changed to " + choosePseudo.getText());
 			    }
 			  } 
 			} );
@@ -108,7 +108,7 @@ public class Visuel extends JPanel{
     			if (command.equals("send")) {
     				
     				String messageAEnvoyer = message.getText();   				
-    				Visuel.currentTalkingWith.thread.sendMessage(messageAEnvoyer);
+    				Visuel.currentTalkingWith.thread.sendMessage(messageAEnvoyer,false);
     				
     			}	
     		}
@@ -232,17 +232,27 @@ public class Visuel extends JPanel{
     	quitConv.addActionListener(new ActionListener() { 
     		public void actionPerformed(ActionEvent e) {
     			String command = e.getActionCommand();
+    			
     			if (command.equals("End conversation with user clicked above")) { 
     				
-    				currentTalkingWith.thread.endConversation();  				
+    				currentTalkingWith.thread.endConversation();  
+    				currentTalkingWith.thread.sendMessage("Terminé",true);
+    				
     				Main.listotherUserTalkingTo.remove(currentTalkingWith);
     				Visuel.updateUserHavingConvWith();
+    				
+    				
     				if (Main.listotherUserTalkingTo.size() == 0) {
-    					Visuel.WriteHistoryField("You dont hav any other conversations");
+    					Visuel.WriteHistoryField("You dont have any other conversations");
+    					currentTalkingWith = null;
     				} else {
     					currentTalkingWith = Main.listotherUserTalkingTo.get(0);
-    					Visuel.WriteHistoryField("Currently talking with" + currentTalkingWith.psuedo);
+    					Visuel.WriteHistoryField("Currently talking with" + currentTalkingWith.pseudo);
     				}
+    				
+    				
+    				
+    				
     				
     			}	
     		}
@@ -263,6 +273,7 @@ public class Visuel extends JPanel{
                 String command = e.getActionCommand();
                 if (command.equals("Deconnexion")) {
                     Main.deconnect();
+                    System.exit(0);
                 } 
             }
         }));
@@ -290,8 +301,8 @@ public class Visuel extends JPanel{
         thread.start();
 	}
 	
-	public static void writeInPsuedoTextArea(String text) {
-		Runnable runnable = new ThreadWriteInPsuedoTextArea(text);
+	public static void writeInpseudoTextArea(String text) {
+		Runnable runnable = new ThreadWriteInpseudoTextArea(text);
         Thread thread = new Thread(runnable);
         thread.start();
 	}

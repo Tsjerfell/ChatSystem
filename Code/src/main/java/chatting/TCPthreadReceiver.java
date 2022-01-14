@@ -16,8 +16,12 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 	public PrintWriter output;
 	public boolean convDone = false;
 	
-	public void sendMessage(String message) {
-		this.output.println(message);
+	public void sendMessage(String message,boolean fini) {
+		if (fini) { 
+			this.output.println("0"+message);
+		} else {
+			this.output.println("1"+message);
+		}
 	} 
 	
 	public TCPthreadReceiver(int port,String AddIP) {
@@ -48,8 +52,12 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 				messageReceived = input.readLine();
 				if (messageReceived == null) {
 					//on a rien reçu, donc on ne fait rien
+				} else if (messageReceived.charAt(0) == (0)){ //L'autre utilisateur viens de terminé la conversation
+					this.convDone = true;
+					this.output.println("0Terminé");
+					socket.close();
 				} else {
-					Visuel.WriteHistoryField(messageReceived);
+					Visuel.WriteHistoryField(messageReceived.substring(1));
 				}
 			}		
 				

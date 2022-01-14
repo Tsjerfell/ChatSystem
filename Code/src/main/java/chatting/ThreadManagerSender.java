@@ -29,7 +29,7 @@ public class ThreadManagerSender extends Thread{
 			Visuel.updateUserHavingConvWith();
 			
 			for (otherUserTalkingTo otheruser : Main.listotherUserTalkingTo) {
-				System.out.println(otheruser.psuedo);
+				System.out.println(otheruser.pseudo);
 			}
 			Socket socket;
 			try {

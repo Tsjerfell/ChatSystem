@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 import Interface.Visuel;
 import main.Main;
@@ -18,8 +19,13 @@ public class TCPthreadSend extends Thread implements TCPThread{
 	public TCPthreadSend(int port) {
 		this.port = port;
 	}
-	public void sendMessage(String message) {
-		this.output.println(message);
+	public void sendMessage(String message,boolean fini) {
+		if (fini) { 
+			this.output.println("0"+message);
+		
+		} else {
+			this.output.println("1"+message);
+		}
 	}
 	
 	public void endConversation() {
@@ -34,15 +40,9 @@ public class TCPthreadSend extends Thread implements TCPThread{
 			BufferedReader input  = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 			this.output = new PrintWriter(soc.getOutputStream(), true);
 			
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 			String messageReceived = "";
 			while(!this.convDone) {
+				System.out.println(this.convDone);
 				
 				try { // Comme on a une thread avec un while(true) pour chaque conversation, on s'est dit que ça va occuper beaucoup des resources dans le CPU.
 					  // Alors on a mit un sleep(1 sec) pour pas trop occuper 
@@ -55,14 +55,22 @@ public class TCPthreadSend extends Thread implements TCPThread{
 				messageReceived = input.readLine();
 				if (messageReceived == null) {
 					//on a rien reçu, donc on ne fait rien
+				} else if (messageReceived.charAt(0) == (0)){ //L'autre utilisateur viens de terminé la conversation
+					this.convDone = true;
+					this.output.println("Terminé");
+					soc.close();
+					serSoc.close();
 				} else {
-					Visuel.WriteHistoryField(messageReceived);
+					Visuel.WriteHistoryField(messageReceived.substring(1));
 				}
 			}
 			
+			if(convDone) {
+				System.out.println("fini");
+			}
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// TODO Auto-generated catch block	
 		}
 		
 		

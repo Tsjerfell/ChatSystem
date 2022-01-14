@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import org.apache.commons.lang3.SerializationUtils;
 
 import Interface.Visuel;
+import chatting.otherUserTalkingTo;
 import connect.Paquet;
 import main.Main;
 
@@ -66,7 +67,7 @@ public class ThreadTraitementPaquet extends Thread{
 	    		    	
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.ChangementdePseudo) {
 	    	System.out.println(paquetDeserialiseReceived.pseudo + " a changé son nom à " + paquetDeserialiseReceived.contenu);
-    		Main.changePsuedoOtherUser(paquetDeserialiseReceived.pseudo, paquetDeserialiseReceived.contenu, packet.getAddress());  
+    		Main.changepseudoOtherUser(paquetDeserialiseReceived.pseudo, paquetDeserialiseReceived.contenu, packet.getAddress());  
     		Visuel.updateConnectedUsers();
     		Visuel.updateUserHavingConvWith();
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.Deconnexion){
@@ -78,7 +79,22 @@ public class ThreadTraitementPaquet extends Thread{
 				}
 			}
 			Main.listOtherConnectedUsers.remove(i);
-		
+			
+			otherUserTalkingTo potenitialyTalkingTo = null;
+			for (otherUserTalkingTo otheruser : Main.listotherUserTalkingTo) {
+				if (otheruser.addIP.equals(packet.getAddress().toString().substring(1))) {
+					potenitialyTalkingTo = otheruser;
+					
+				}
+			}
+			
+			if (potenitialyTalkingTo == null) {
+				//on n'a pas trouvé donc on ne lui parle pas
+			} else {
+				potenitialyTalkingTo.thread.endConversation();
+				Main.listotherUserTalkingTo.remove(potenitialyTalkingTo);
+				Visuel.updateUserHavingConvWith();
+			}
 	    	//otherUser onvaEnlever = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	//Main.listOtherConnectedUsers.remove(onvaEnlever);
 	    	

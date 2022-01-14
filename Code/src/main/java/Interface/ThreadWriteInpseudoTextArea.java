@@ -1,9 +1,9 @@
 package Interface;
 
-public class ThreadWriteInPsuedoTextArea implements Runnable{
+public class ThreadWriteInpseudoTextArea implements Runnable{
 		String text;
 		
-		public ThreadWriteInPsuedoTextArea(String text){
+		public ThreadWriteInpseudoTextArea(String text){
 			this.text = text;
 		}
 		public void run() {
