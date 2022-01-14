@@ -14,47 +14,51 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 	public int port;
 	public String AddIP;
 	public PrintWriter output;
+	public boolean convDone = false;
 	
 	public void sendMessage(String message) {
 		this.output.println(message);
 	} 
 	
-		public TCPthreadReceiver(int port,String AddIP) {
-			this.port = port;
-			this.AddIP = AddIP;
-		}
+	public TCPthreadReceiver(int port,String AddIP) {
+		this.port = port;
+		this.AddIP = AddIP;
+	}
+	
+	public void endConversation() {
+		this.convDone = true;
+	}
 		
-		public void run() {
-			try {
-				Socket socket = new Socket(this.AddIP,this.port);
+	public void run() {
+		try {
+			Socket socket = new Socket(this.AddIP,this.port);
 				
-				BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				this.output = new PrintWriter(socket.getOutputStream(), true);
+			BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			this.output = new PrintWriter(socket.getOutputStream(), true);
 				
-				try {
-					Thread.sleep(3000);
+			String messageReceived = "";
+			while(!this.convDone) {
+				try { // Comme on a une thread avec un while(true) pour chaque conversation, on s'est dit que ça va occuper beaucoup des resources dans le CPU.
+					  // Alors on a mit un sleep(1 sec) pour pas trop occuper 
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				String messageReceived = "";
-				while(true) {
-					messageReceived = input.readLine();
-					if (messageReceived == null) {
-						//on a rien reçu, donc on ne fait rien
-					} else {
-						Visuel.addToHistoryField(messageReceived);
-					}
+				messageReceived = input.readLine();
+				if (messageReceived == null) {
+					//on a rien reçu, donc on ne fait rien
+				} else {
+					Visuel.WriteHistoryField(messageReceived);
 				}
+			}		
 				
-				
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 }

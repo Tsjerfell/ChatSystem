@@ -27,7 +27,10 @@ public class ThreadManagerSender extends Thread{
 			Main.listotherUserTalkingTo.add(oUTT);
 			Visuel.currentTalkingWith = oUTT;
 			Visuel.updateUserHavingConvWith();
-					
+			
+			for (otherUserTalkingTo otheruser : Main.listotherUserTalkingTo) {
+				System.out.println(otheruser.psuedo);
+			}
 			Socket socket;
 			try {
 				socket = new Socket(this.otherUser.addressIP,12347);

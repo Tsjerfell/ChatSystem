@@ -3,21 +3,20 @@ package databases;
 import java.sql.*;
 import java.text.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class DBConv{
-	Statement stmt;
+	public Statement stmt;
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss"); 
-	Connection con;
+	public Connection con;
 	
 	public DBConv(){
 		try
 	    {
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver"); 
-			this.con=DriverManager.getConnection("jdbc:odbc:DBConv");
+			Class.forName("com.mysql.cj.jdbc.Driver"); 
+			this.con=DriverManager.getConnection("jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_017?useSSL=false&seJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","tp_servlet_017", "thaiJoh5");
 		    this.stmt=con.createStatement();
-			String sql = "CREATE TABLE Conversations " +
-		            "( IPSender VARCHAR(255), " + 
-		            " IPReceiver VARCHAR(255), Message VARCHAR(255), date Date)"; 
+			String sql = "CREATE TABLE IF NOT EXISTS Conversations ( IPSender VARCHAR(255), IPReceiver VARCHAR(255), Message VARCHAR(255), date VARCHAR(255))"; 
 		    this.stmt.executeUpdate(sql);
 	    }
 	    catch(Exception e){ 
@@ -25,9 +24,9 @@ public class DBConv{
 	    }
 	}
 	
-	public void addMessage(String send, String receive, String msg, Date date) {
+	public void addMessage(String send, String receive, String msg, String date) {
 		try {
-			this.stmt.executeUpdate("INSERT INTO Users (IPSender, IPReceiver, Message, date)" + "VALUES ('"+send+"', '"+receive+"', '"+msg+"', '"+dateFormat.format(date)+"')"); 
+			this.stmt.executeUpdate("INSERT INTO Conversations (IPSender, IPReceiver, Message, date)" + "VALUES ('"+send+"', '"+receive+"', '"+msg+"', '"+date+"')"); 
 		}
 		catch (Exception e) {
 			System.out.println(e);
@@ -39,14 +38,14 @@ public class DBConv{
 		ArrayList<String> IPSenderList=new ArrayList<String>();
 		ArrayList<String> IPReceiverList=new ArrayList<String>();
 		ArrayList<String> msgList=new ArrayList<String>();
-		ArrayList<Date> dateList=new ArrayList<Date>();
+		ArrayList<String> dateList=new ArrayList<String>();
 		try {
-			ResultSet rs = this.stmt.executeQuery("SELECT * FROM Users WHERE IPSender='"+user1+"' AND IPReceiver='"+user2+"' OR IPSender='"+user2+"' AND IPReceiver='"+user1+"' ORDE BY Date DESC");
+			ResultSet rs = this.stmt.executeQuery("SELECT * FROM Conversations WHERE IPSender='"+user1+"' AND IPReceiver='"+user2+"' OR IPSender='"+user2+"' AND IPReceiver='"+user1+"' ORDER BY Date ASC");
 			while (rs.next()) {
-				IPSenderList.add(rs.getString("IPSender"));
-				IPReceiverList.add(rs.getString("IPReceiver"));
-				msgList.add(rs.getString("msg"));
-				dateList.add(rs.getDate("date"));
+				IPSenderList.add(rs.getString(1));
+				IPReceiverList.add(rs.getString(2));
+				msgList.add(rs.getString(3));
+				dateList.add(rs.getString(4));
 			}
 			result=new Conversation (IPSenderList, IPReceiverList, msgList, dateList);
 		}
@@ -58,7 +57,7 @@ public class DBConv{
 	
 	public void dropTable() {
 		try {
-			this.stmt.executeUpdate("DROP TABLE Conv");
+			this.stmt.executeUpdate("DROP TABLE Conversations");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

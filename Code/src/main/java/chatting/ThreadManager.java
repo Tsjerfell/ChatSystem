@@ -49,7 +49,10 @@ public class ThreadManager extends Thread{
 				Main.listotherUserTalkingTo.add(oUTT);
 				Visuel.currentTalkingWith = oUTT;
 				Visuel.updateUserHavingConvWith();
-				
+				System.out.println("boobiba");
+				for (otherUserTalkingTo otheruser : Main.listotherUserTalkingTo) {
+					System.out.println(otheruser.psuedo);
+				}
 				socket.close();
 				
 			}catch(Exception e){System.out.println(e);}  

@@ -106,7 +106,7 @@ public class Visuel extends JPanel{
     		public void actionPerformed(ActionEvent e) {
     			String command = e.getActionCommand();
     			if (command.equals("send")) {
-    				System.out.println(Visuel.currentTalkingWith.psuedo);
+    				
     				String messageAEnvoyer = message.getText();   				
     				Visuel.currentTalkingWith.thread.sendMessage(messageAEnvoyer);
     				
@@ -161,10 +161,25 @@ public class Visuel extends JPanel{
     	initConv.addActionListener(new ActionListener() { 
     		public void actionPerformed(ActionEvent e) {
     			String command = e.getActionCommand();
-    			if (command.equals("Initialize conversation with user clicked above")) {   				   
+    			if (command.equals("Initialize conversation with user clicked above")) { 
+    				
     				otherUser ComWith = Main.listOtherConnectedUsers.get(rowNumberConnectedUsers-1);
-    				ThreadManagerSender thread = new ThreadManagerSender(ComWith);
-    				thread.start();
+    				boolean AlreadyTalkingWith = false ;
+    				otherUserTalkingTo otherUserNeed = null;
+    				for (otherUserTalkingTo otherUser : Main.listotherUserTalkingTo) {
+    					if (otherUser.addIP.equals(ComWith.addressIP.toString().substring(1))) {// Alors on parle déjà avec la personne
+    						AlreadyTalkingWith = true;
+    						otherUserNeed = otherUser;
+    					}
+    				}
+    				
+    				if (AlreadyTalkingWith) {// Alors on parle déjà avec la personne
+						Visuel.currentTalkingWith = otherUserNeed;
+						Visuel.WriteHistoryField("You are already chatting with " + ComWith.pseudo +", here is the conversation:");
+					} else {
+						ThreadManagerSender thread = new ThreadManagerSender(ComWith);
+	    				thread.start();
+					}
     				
     				
     			}	
@@ -192,7 +207,7 @@ public class Visuel extends JPanel{
                 rowNumberConvWith = 0;
                 int columnnum = 1;
 
-                // We create a try catch to catch any exceptions. We will simply ignore such an error for our demonstration.
+                // We create a try catch to catch any exceptions.
                 try {
                     // First we find the position of the caret. This is the number of where the caret is in relation to the start of the JTextArea
                     // in the upper left corner. We use this position to find offset values (eg what line we are on for the given position as well as
@@ -206,6 +221,7 @@ public class Visuel extends JPanel{
 
                     // We have to add one here because line numbers start at 0 for getLineOfOffset and we want it to start at 1 for display.
                     rowNumberConvWith += 1;
+                    currentTalkingWith = Main.listotherUserTalkingTo.get(rowNumberConvWith -1);
                 }
                 catch(Exception ex) { }
 
@@ -213,6 +229,25 @@ public class Visuel extends JPanel{
         });
     	
     	quitConv = new JButton("End conversation with user clicked above");
+    	quitConv.addActionListener(new ActionListener() { 
+    		public void actionPerformed(ActionEvent e) {
+    			String command = e.getActionCommand();
+    			if (command.equals("End conversation with user clicked above")) { 
+    				
+    				currentTalkingWith.thread.endConversation();  				
+    				Main.listotherUserTalkingTo.remove(currentTalkingWith);
+    				Visuel.updateUserHavingConvWith();
+    				if (Main.listotherUserTalkingTo.size() == 0) {
+    					Visuel.WriteHistoryField("You dont hav any other conversations");
+    				} else {
+    					currentTalkingWith = Main.listotherUserTalkingTo.get(0);
+    					Visuel.WriteHistoryField("Currently talking with" + currentTalkingWith.psuedo);
+    				}
+    				
+    			}	
+    		}
+    	});
+  
     	add(quitConv);
     	quitConv.setBounds (485, 460, 410, 25);
     	
@@ -266,7 +301,7 @@ public class Visuel extends JPanel{
         Thread thread = new Thread(runnable);
         thread.start();
 	}
-	public static void addToHistoryField(String text) {
+	public static void WriteHistoryField(String text) {
 		Runnable runnable = new ThreadWriteHistory(text);
         Thread thread = new Thread(runnable);
         thread.start();

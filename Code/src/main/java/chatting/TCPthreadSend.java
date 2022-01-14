@@ -7,17 +7,23 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import Interface.Visuel;
 import main.Main;
 
 public class TCPthreadSend extends Thread implements TCPThread{
 	public int port;
 	public PrintWriter output;
+	public boolean convDone = false;
 	
 	public TCPthreadSend(int port) {
 		this.port = port;
 	}
 	public void sendMessage(String message) {
 		this.output.println(message);
+	}
+	
+	public void endConversation() {
+		this.convDone = true;
 	}
 	public void run() {
 		ServerSocket serSoc;
@@ -36,12 +42,21 @@ public class TCPthreadSend extends Thread implements TCPThread{
 			}
 			
 			String messageReceived = "";
-			while(true) {
+			while(!this.convDone) {
+				
+				try { // Comme on a une thread avec un while(true) pour chaque conversation, on s'est dit que ça va occuper beaucoup des resources dans le CPU.
+					  // Alors on a mit un sleep(1 sec) pour pas trop occuper 
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
+				
 				messageReceived = input.readLine();
 				if (messageReceived == null) {
 					//on a rien reçu, donc on ne fait rien
 				} else {
-					System.out.println(messageReceived);
+					Visuel.WriteHistoryField(messageReceived);
 				}
 			}
 			

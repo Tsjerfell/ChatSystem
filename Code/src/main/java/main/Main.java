@@ -88,8 +88,14 @@ public class Main {
 			}
 		}
 		
+		for (otherUserTalkingTo otherUser : listotherUserTalkingTo) {
+			if (otherUser.addIP.equals(addressIP.toString().substring(1))) {
+				otherUser.psuedo = newPseudo;
+			}
+		}
+		
 	}
-	public static void printUsers() {
+	public static void printUsers() { //Pour tester
 		System.out.println("Ceux qui sont connecté:");
 		for (otherUser otherUser : listOtherConnectedUsers) {			
 				System.out.println("	"+otherUser.pseudo);
@@ -115,7 +121,7 @@ public class Main {
 	
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		System.setProperty("java.net.preferIPv4Stack","true");
-		Main newMain = new Main("Erikhoyere"); //l'addressMac n'existe plus		
+		Main newMain = new Main("Erik"); //l'addressMac n'existe plus		
 		User User1 = new User();
 		
 		

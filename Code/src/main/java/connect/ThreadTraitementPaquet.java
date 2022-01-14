@@ -68,6 +68,7 @@ public class ThreadTraitementPaquet extends Thread{
 	    	System.out.println(paquetDeserialiseReceived.pseudo + " a changé son nom à " + paquetDeserialiseReceived.contenu);
     		Main.changePsuedoOtherUser(paquetDeserialiseReceived.pseudo, paquetDeserialiseReceived.contenu, packet.getAddress());  
     		Visuel.updateConnectedUsers();
+    		Visuel.updateUserHavingConvWith();
 	    } else if (paquetDeserialiseReceived.type == TypedePaquet.Deconnexion){
 	    	System.out.println("Received deconnexion");
 	    	int i = 0;

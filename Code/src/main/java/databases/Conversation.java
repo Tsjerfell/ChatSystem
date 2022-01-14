@@ -6,24 +6,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Conversation{
-	ArrayList<String> IPSenderList;
+	public ArrayList<String> IPSenderList;
 	ArrayList<String> IPReceiverList;
 	ArrayList<String> msgList;
-	ArrayList<Date> dateList;
+	ArrayList<String> dateList;
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss"); 
 	
-	public Conversation(ArrayList<String> sender, ArrayList<String> receiver, ArrayList<String> msg, ArrayList<Date> date) {
+	public Conversation(ArrayList<String> sender, ArrayList<String> receiver, ArrayList<String> msg, ArrayList<String> date) {
 		this.IPSenderList=sender;
 		this.IPReceiverList=receiver;
 		this.msgList=msg;
 		this.dateList=date;
 	}
 	
-	public String toString (Conversation con) {
+	public String toString () {
 		ArrayList<String> convList=new ArrayList<String>();
-		for (int i=0;i<con.IPSenderList.size();i++) {
-			convList.add("From "+con.IPSenderList.get(i)+" to "+con.IPReceiverList.get(i)+" at "+dateFormat.format(con.dateList.get(i))+" : "+con.msgList.get(i)+"\n");
+		for (int i=0;i<this.IPSenderList.size();i++) {
+			convList.add("From "+this.IPSenderList.get(i)+" to "+this.IPReceiverList.get(i)+" at "+this.dateList.get(i)+" : "+this.msgList.get(i)+"\n");
 		}
-		return String.join(" ",convList);
+		return String.join("",convList);
 	}
 }

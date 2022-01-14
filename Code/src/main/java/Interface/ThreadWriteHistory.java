@@ -7,7 +7,8 @@ public class ThreadWriteHistory implements Runnable{
 		this.text = text;
 	}
 	public void run() {
-		Visuel.textHistory.append(this.text);
+		Visuel.textHistory.setText("");
+		Visuel.textHistory.append(text);
 	}
 }
 
