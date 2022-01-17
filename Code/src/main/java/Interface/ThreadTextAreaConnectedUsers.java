@@ -4,15 +4,19 @@ import connect.otherUser;
 import main.Main;
 
 public class ThreadTextAreaConnectedUsers implements Runnable{
+	private static Object mutexConnectedUsers = new Object();
+	
 	
 	public void updateConnectedUsers() {
-		Visuel.textAreaConnectedUsers.setText("");		
+		synchronized(ThreadTextAreaConnectedUsers.mutexConnectedUsers) {
 		
-		for(otherUser otherUser : Main.listOtherConnectedUsers){
-			Visuel.textAreaConnectedUsers.append(otherUser.pseudo +"\n");
+				Visuel.textAreaConnectedUsers.setText("");		
+		
+				for(otherUser otherUser : Main.listOtherConnectedUsers){
+					Visuel.textAreaConnectedUsers.append(otherUser.pseudo +"\n");
+				}
+			}
 		}
-		
-	}
 		public void run() {
 			updateConnectedUsers();
 		}

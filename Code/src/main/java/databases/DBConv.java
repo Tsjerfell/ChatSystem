@@ -26,7 +26,7 @@ public class DBConv{
 	
 	public void addMessage(String send, String receive, String msg, String date) {
 		try {
-			this.stmt.executeUpdate("INSERT INTO Conversations (IPSender, IPReceiver, Message, date)" + "VALUES ('"+send+"', '"+receive+"', '"+msg+"', '"+date+"')"); 
+			this.stmt.executeUpdate("INSERT INTO Conversations (IPSender, IPReceiver, Message, date)" + "VALUES ('"+send+"', '"+receive+"', '"+msg.substring(1)+"', '"+date+"')"); 
 		}
 		catch (Exception e) {
 			System.out.println(e);

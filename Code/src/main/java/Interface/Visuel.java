@@ -17,6 +17,8 @@ public class Visuel extends JPanel{
 	JFrame frame;
 	public static otherUserTalkingTo currentTalkingWith = new otherUserTalkingTo();
 	
+	
+	
 	//MainPanel
 	JPanel mainPanel;
 	
@@ -297,9 +299,12 @@ public class Visuel extends JPanel{
 	}
 	
 	public static void updateConnectedUsers() {
-		Runnable runnable = new ThreadTextAreaConnectedUsers();
-        Thread thread = new Thread(runnable);
-        thread.start();
+		
+		
+			Runnable runnable = new ThreadTextAreaConnectedUsers();
+        	Thread thread = new Thread(runnable);
+        	thread.start();
+		
 	}
 	
 	public static void writeInpseudoTextArea(String text) {
