@@ -20,7 +20,7 @@ public class ThreadManagerSender extends Thread{
 		
 		public void run() { 
 						
-			TCPthreadSend thread = new TCPthreadSend(Main.prochainPort);
+			TCPthreadSend thread = new TCPthreadSend(Main.prochainPort, (otherUser.addressIP).toString().substring(1));
 			thread.start();
 			
 			otherUserTalkingTo oUTT= new otherUserTalkingTo((otherUser.addressIP).toString().substring(1),thread,otherUser.pseudo);

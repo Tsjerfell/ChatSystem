@@ -1,5 +1,6 @@
 package databases;
 
+import main.Main;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,10 +21,10 @@ public class Conversation{
 	}
 	
 	public String toString () {
-		ArrayList<String> convList=new ArrayList<String>();
-		for (int i=0;i<this.IPSenderList.size();i++) {
-			convList.add("From "+this.IPSenderList.get(i)+" to "+this.IPReceiverList.get(i)+" at "+this.dateList.get(i)+" : "+this.msgList.get(i)+"\n");
-		}
-		return String.join("",convList);
-	}
+        ArrayList<String> convList=new ArrayList<String>();
+        for (int i=0;i<this.IPSenderList.size();i++) {
+            convList.add("From "+Main.findPseudo(this.IPSenderList.get(i))+" to "+Main.findPseudo(this.IPReceiverList.get(i))+" at "+this.dateList.get(i)+" : "+this.msgList.get(i)+"\n");
+        }
+        return String.join("",convList);
+    }
 }

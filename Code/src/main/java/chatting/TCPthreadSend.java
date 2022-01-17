@@ -7,17 +7,25 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+import Interface.ThreadDisplayHistory;
 import Interface.Visuel;
+import databases.DBConv;
 import main.Main;
 
 public class TCPthreadSend extends Thread implements TCPThread{
 	public int port;
 	public PrintWriter output;
 	public boolean convDone = false;
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+	public String addrIPdistant;
+	DBConv DB1;
 	
-	public TCPthreadSend(int port) {
+	public TCPthreadSend(int port, String addrIPdistant) {
 		this.port = port;
+		this.addrIPdistant = addrIPdistant;
 	}
 	public void sendMessage(String message,boolean fini) {
 		if (fini) { 
@@ -34,7 +42,8 @@ public class TCPthreadSend extends Thread implements TCPThread{
 	public void run() {
 		ServerSocket serSoc;
 		try {
-			serSoc = new ServerSocket(port);
+			this.DB1=new DBConv();
+			serSoc = new ServerSocket(this.port);
 			Socket soc = serSoc.accept();
 			
 			BufferedReader input  = new BufferedReader(new InputStreamReader(soc.getInputStream()));
@@ -61,7 +70,10 @@ public class TCPthreadSend extends Thread implements TCPThread{
 					soc.close();
 					serSoc.close();
 				} else {
-					Visuel.WriteHistoryField(messageReceived.substring(1));
+					this.DB1.addMessage(this.addrIPdistant, Main.addressIP, messageReceived, dtf.format(LocalDateTime.now()));
+                    Runnable runnable = new ThreadDisplayHistory(this.addrIPdistant,Main.addressIP);
+                    Thread thread = new Thread(runnable);
+                    thread.start();
 				}
 			}
 			

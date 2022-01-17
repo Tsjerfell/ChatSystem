@@ -40,7 +40,7 @@ public class DBConv{
 		ArrayList<String> msgList=new ArrayList<String>();
 		ArrayList<String> dateList=new ArrayList<String>();
 		try {
-			ResultSet rs = this.stmt.executeQuery("SELECT * FROM Conversations WHERE IPSender='"+user1+"' AND IPReceiver='"+user2+"' OR IPSender='"+user2+"' AND IPReceiver='"+user1+"' ORDER BY Date ASC");
+			ResultSet rs = this.stmt.executeQuery("SELECT * FROM Conversations WHERE ((IPSender='"+user1+"' AND IPReceiver='"+user2+"') OR (IPSender='"+user2+"' AND IPReceiver='"+user1+"')) ORDER BY Date ASC");
 			while (rs.next()) {
 				IPSenderList.add(rs.getString(1));
 				IPReceiverList.add(rs.getString(2));

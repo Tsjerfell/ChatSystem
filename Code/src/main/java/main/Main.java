@@ -72,6 +72,15 @@ public class Main {
 		
 	}
 	
+	public static String findPseudo(String IP) {
+        for (otherUserTalkingTo otherUserTalkingTo : Main.listotherUserTalkingTo) {
+            if (otherUserTalkingTo.addIP.equalsIgnoreCase(IP)) {
+                return otherUserTalkingTo.pseudo;
+            }
+        }
+        return Main.pseudo;
+    }
+	
 	public static void augmentePortNumber() {
 		prochainPort++;
 	}
@@ -126,7 +135,7 @@ public class Main {
 		
 		
 		 JFrame frame = new JFrame ("Visuel");
-	        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+	        frame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
 	        frame.getContentPane().add (new Visuel());
 	        frame.pack();
 	        frame.setVisible (true);	

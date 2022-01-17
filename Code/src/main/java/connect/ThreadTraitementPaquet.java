@@ -95,6 +95,10 @@ public class ThreadTraitementPaquet extends Thread{
 				Main.listotherUserTalkingTo.remove(potenitialyTalkingTo);
 				Visuel.updateUserHavingConvWith();
 			}
+			
+			if (potenitialyTalkingTo == Visuel.currentTalkingWith) {
+				Visuel.WriteHistoryField("You currently have no other conversations ");
+			}
 	    	//otherUser onvaEnlever = new otherUser(paquetDeserialiseReceived.pseudo,packet.getAddress());
 	    	//Main.listOtherConnectedUsers.remove(onvaEnlever);
 	    	

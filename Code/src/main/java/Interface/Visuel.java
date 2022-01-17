@@ -197,7 +197,7 @@ public class Visuel extends JPanel{
     	textUsersHavingConnexionWith.getCaret().setVisible(true);
     	add(textUsersHavingConnexionWith);
     	textUsersHavingConnexionWith.setBounds(480, 295, 415, 165);
-    	textAreaConnectedUsers.addCaretListener(new CaretListener() {
+    	textUsersHavingConnexionWith.addCaretListener(new CaretListener() {
             // Each time the caret is moved, it will trigger the listener and its method caretUpdate.
             // It will then pass the event to the update method including the source of the event (which is our textarea control)
             public void caretUpdate(CaretEvent e) {
@@ -222,6 +222,7 @@ public class Visuel extends JPanel{
                     // We have to add one here because line numbers start at 0 for getLineOfOffset and we want it to start at 1 for display.
                     rowNumberConvWith += 1;
                     currentTalkingWith = Main.listotherUserTalkingTo.get(rowNumberConvWith -1);
+                    WriteHistoryField("Currently talking with "+currentTalkingWith.pseudo);
                 }
                 catch(Exception ex) { }
 

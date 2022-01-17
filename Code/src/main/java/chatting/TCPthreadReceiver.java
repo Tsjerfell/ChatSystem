@@ -6,8 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.format.DateTimeFormatter;
 
+import Interface.ThreadDisplayHistory;
 import Interface.Visuel;
+import databases.DBConv;
+import main.Main;
+
+import java.time.LocalDateTime;
 
 public class TCPthreadReceiver extends Thread implements TCPThread{
 	
@@ -15,6 +21,13 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 	public String AddIP;
 	public PrintWriter output;
 	public boolean convDone = false;
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+	
+	
+	public TCPthreadReceiver(int port,String AddIP) {
+		this.port = port;
+		this.AddIP = AddIP;
+	}
 	
 	public void sendMessage(String message,boolean fini) {
 		if (fini) { 
@@ -24,10 +37,6 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 		}
 	} 
 	
-	public TCPthreadReceiver(int port,String AddIP) {
-		this.port = port;
-		this.AddIP = AddIP;
-	}
 	
 	public void endConversation() {
 		this.convDone = true;
@@ -35,6 +44,15 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 		
 	public void run() {
 		try {
+			DBConv DB1=new DBConv();
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			Socket socket = new Socket(this.AddIP,this.port);
 				
 			BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -57,7 +75,10 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 					this.output.println("0Terminé");
 					socket.close();
 				} else {
-					Visuel.WriteHistoryField(messageReceived.substring(1));
+					DB1.addMessage(this.AddIP, Main.addressIP, messageReceived, dtf.format(LocalDateTime.now()));
+                    Runnable runnable = new ThreadDisplayHistory(this.AddIP,Main.addressIP);
+                    Thread thread = new Thread(runnable);
+                    thread.start();
 				}
 			}		
 				

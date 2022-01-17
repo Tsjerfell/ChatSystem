@@ -32,9 +32,9 @@ public class ThreadManager extends Thread{
 				BufferedReader input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				
 				String IP = input.readLine();
-				System.out.println("Received IP =" +IP.substring(1));
+				
 				String portFormatString = input.readLine();
-				System.out.println("Received port =" +portFormatString);
+				
 				int portFormatInt = Integer.parseInt(portFormatString);
 				
 				TCPthreadReceiver thread= new TCPthreadReceiver(portFormatInt, IP.substring(1));
