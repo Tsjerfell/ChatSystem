@@ -22,7 +22,7 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 	public PrintWriter output;
 	public boolean convDone = false;
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-	
+	DBConv DB1;
 	
 	public TCPthreadReceiver(int port,String AddIP) {
 		this.port = port;
@@ -34,6 +34,10 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 			this.output.println("0"+message);
 		} else {
 			this.output.println("1"+message);
+            DB1.addMessage(Main.addressIP, this.AddIP, message, dtf.format(LocalDateTime.now()));
+            Runnable runnable = new ThreadDisplayHistory(this.AddIP,Main.addressIP);
+            Thread thread = new Thread(runnable);
+            thread.start();
 		}
 	} 
 	

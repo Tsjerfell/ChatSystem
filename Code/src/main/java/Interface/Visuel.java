@@ -225,6 +225,9 @@ public class Visuel extends JPanel{
                     rowNumberConvWith += 1;
                     currentTalkingWith = Main.listotherUserTalkingTo.get(rowNumberConvWith -1);
                     WriteHistoryField("Currently talking with "+currentTalkingWith.pseudo);
+                    Runnable runnable = new ThreadDisplayHistory(Main.findIp(currentTalkingWith.pseudo),Main.addressIP);
+                    Thread thread = new Thread(runnable);
+                    thread.start();
                 }
                 catch(Exception ex) { }
 

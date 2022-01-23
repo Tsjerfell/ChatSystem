@@ -33,6 +33,10 @@ public class TCPthreadSend extends Thread implements TCPThread{
 		
 		} else {
 			this.output.println("1"+message);
+			DB1.addMessage(Main.addressIP, this.addrIPdistant, message, dtf.format(LocalDateTime.now()));
+            Runnable runnable = new ThreadDisplayHistory(this.addrIPdistant,Main.addressIP);
+            Thread thread = new Thread(runnable);
+            thread.start();
 		}
 	}
 	

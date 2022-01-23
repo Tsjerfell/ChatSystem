@@ -72,6 +72,15 @@ public class Main {
 		
 	}
 	
+	public static String findIp(String pseudo) {
+        for (otherUserTalkingTo otherUserTalkingTo : Main.listotherUserTalkingTo) {
+            if (otherUserTalkingTo.pseudo.equalsIgnoreCase(pseudo)) {
+                return otherUserTalkingTo.addIP;
+            }
+        }
+        return Main.addressIP;
+    }
+	
 	public static String findPseudo(String IP) {
         for (otherUserTalkingTo otherUserTalkingTo : Main.listotherUserTalkingTo) {
             if (otherUserTalkingTo.addIP.equalsIgnoreCase(IP)) {
