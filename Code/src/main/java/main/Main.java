@@ -20,6 +20,7 @@ import chatting.otherUserTalkingTo;
 import connect.Paquet;
 import connect.TypedePaquet;
 import connect.otherUser;
+import databases.DBConv;
 
 public class Main {
 	
@@ -29,6 +30,7 @@ public class Main {
 	public static ArrayList<otherUserTalkingTo> listotherUserTalkingTo = new ArrayList<otherUserTalkingTo>();
 	//Pour chatting
 	public static int prochainPort = 12348;
+	public static DBConv DB1=new DBConv();
 	
 	public Main(String pseudo) throws SocketException, UnknownHostException {
 		this.pseudo = pseudo;
@@ -139,7 +141,9 @@ public class Main {
 	
 	public static void main (String[] args) throws UnknownHostException, SocketException {
 		System.setProperty("java.net.preferIPv4Stack","true");
-		Main newMain = new Main("Erik"); //l'addressMac n'existe plus		
+		try(final DatagramSocket socketForIP = new DatagramSocket()){
+	    	  socketForIP.connect(InetAddress.getByName("8.8.8.8"), 10002);
+		Main newMain = new Main("/"+socketForIP.getLocalAddress().getHostAddress()); }//l'addressMac n'existe plus		
 		User User1 = new User();
 		
 		

@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 
 import Interface.ThreadDisplayHistory;
 import Interface.Visuel;
@@ -22,7 +23,6 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 	public PrintWriter output;
 	public boolean convDone = false;
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-	DBConv DB1;
 	
 	public TCPthreadReceiver(int port,String AddIP) {
 		this.port = port;
@@ -34,7 +34,7 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 			this.output.println("0"+message);
 		} else {
 			this.output.println("1"+message);
-            DB1.addMessage(Main.addressIP, this.AddIP, message, dtf.format(LocalDateTime.now()));
+            Main.DB1.addMessage(Main.addressIP, this.AddIP, "1"+message, dtf.format(LocalDateTime.now()));
             Runnable runnable = new ThreadDisplayHistory(this.AddIP,Main.addressIP);
             Thread thread = new Thread(runnable);
             thread.start();
@@ -48,8 +48,7 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 		
 	public void run() {
 		try {
-			DBConv DB1=new DBConv();
-			
+
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e1) {
@@ -77,9 +76,19 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 				} else if (messageReceived.charAt(0) == (0)){ //L'autre utilisateur viens de terminé la conversation
 					this.convDone = true;
 					this.output.println("0Terminé");
+					Visuel.WriteHistoryField(Main.findPseudo(this.AddIP)+" have ended the conversation");
+					Iterator<otherUserTalkingTo> itr=Main.listotherUserTalkingTo.iterator();
+					while(itr.hasNext()) {
+						otherUserTalkingTo otheruser=itr.next();
+						if (otheruser.addIP.equals(this.AddIP)) {
+							otheruser.thread.endConversation();
+					        itr.remove();		
+						}
+					}
+					Visuel.updateUserHavingConvWith();
 					socket.close();
 				} else {
-					DB1.addMessage(this.AddIP, Main.addressIP, messageReceived, dtf.format(LocalDateTime.now()));
+					Main.DB1.addMessage(this.AddIP, Main.addressIP, messageReceived, dtf.format(LocalDateTime.now()));
                     Runnable runnable = new ThreadDisplayHistory(this.AddIP,Main.addressIP);
                     Thread thread = new Thread(runnable);
                     thread.start();

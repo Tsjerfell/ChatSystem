@@ -109,8 +109,10 @@ public class Visuel extends JPanel{
     			String command = e.getActionCommand();
     			if (command.equals("send")) {
     				
-    				String messageAEnvoyer = message.getText();   				
+    				String messageAEnvoyer = message.getText();  
+    				try {
     				Visuel.currentTalkingWith.thread.sendMessage(messageAEnvoyer,false);
+    				}catch(Exception ex) {}
     				
     			}	
     		}

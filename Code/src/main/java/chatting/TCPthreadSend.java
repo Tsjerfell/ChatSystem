@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 
 import Interface.ThreadDisplayHistory;
 import Interface.Visuel;
@@ -21,7 +22,6 @@ public class TCPthreadSend extends Thread implements TCPThread{
 	public boolean convDone = false;
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	public String addrIPdistant;
-	DBConv DB1;
 	
 	public TCPthreadSend(int port, String addrIPdistant) {
 		this.port = port;
@@ -33,7 +33,7 @@ public class TCPthreadSend extends Thread implements TCPThread{
 		
 		} else {
 			this.output.println("1"+message);
-			DB1.addMessage(Main.addressIP, this.addrIPdistant, message, dtf.format(LocalDateTime.now()));
+			Main.DB1.addMessage(Main.addressIP, this.addrIPdistant, "1"+message, dtf.format(LocalDateTime.now()));
             Runnable runnable = new ThreadDisplayHistory(this.addrIPdistant,Main.addressIP);
             Thread thread = new Thread(runnable);
             thread.start();
@@ -46,7 +46,6 @@ public class TCPthreadSend extends Thread implements TCPThread{
 	public void run() {
 		ServerSocket serSoc;
 		try {
-			this.DB1=new DBConv();
 			serSoc = new ServerSocket(this.port);
 			Socket soc = serSoc.accept();
 			
@@ -70,11 +69,21 @@ public class TCPthreadSend extends Thread implements TCPThread{
 					//on a rien reçu, donc on ne fait rien
 				} else if (messageReceived.charAt(0) == (0)){ //L'autre utilisateur viens de terminé la conversation
 					this.convDone = true;
-					this.output.println("Terminé");
+					this.output.println("0Terminé");
+					Visuel.WriteHistoryField(Main.findPseudo(this.addrIPdistant)+" have ended the conversation");
+					Iterator<otherUserTalkingTo> itr=Main.listotherUserTalkingTo.iterator();
+					while(itr.hasNext()) {
+						otherUserTalkingTo otheruser=itr.next();
+						if (otheruser.addIP.equals(this.addrIPdistant)) {
+							otheruser.thread.endConversation();
+					        itr.remove();		
+						}
+					}
+					Visuel.updateUserHavingConvWith();
 					soc.close();
 					serSoc.close();
 				} else {
-					this.DB1.addMessage(this.addrIPdistant, Main.addressIP, messageReceived, dtf.format(LocalDateTime.now()));
+					Main.DB1.addMessage(this.addrIPdistant, Main.addressIP, messageReceived, dtf.format(LocalDateTime.now()));
                     Runnable runnable = new ThreadDisplayHistory(this.addrIPdistant,Main.addressIP);
                     Thread thread = new Thread(runnable);
                     thread.start();
