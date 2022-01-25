@@ -1,5 +1,7 @@
 package Interface;
 
+import java.util.Iterator;
+
 import connect.otherUser;
 import main.Main;
 
@@ -12,7 +14,10 @@ public class ThreadTextAreaConnectedUsers implements Runnable{
 		
 				Visuel.textAreaConnectedUsers.setText("");		
 		
-				for(otherUser otherUser : Main.listOtherConnectedUsers){
+
+				Iterator<otherUser> itr=Main.listOtherConnectedUsers.iterator();
+				while(itr.hasNext()) {
+					otherUser otherUser=itr.next();
 					Visuel.textAreaConnectedUsers.append(otherUser.pseudo +"\n");
 				}
 			}
