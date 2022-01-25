@@ -73,7 +73,7 @@ public class TCPthreadReceiver extends Thread implements TCPThread{
 				messageReceived = input.readLine();
 				if (messageReceived == null) {
 					//on a rien reçu, donc on ne fait rien
-				} else if (messageReceived.charAt(0) == (0)){ //L'autre utilisateur viens de terminé la conversation
+				} else if (messageReceived.charAt(0) == '0'){ //L'autre utilisateur viens de terminé la conversation
 					this.convDone = true;
 					this.output.println("0Terminé");
 					Visuel.WriteHistoryField(Main.findPseudo(this.AddIP)+" have ended the conversation");

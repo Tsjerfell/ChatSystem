@@ -166,7 +166,7 @@ public class Visuel extends JPanel{
     		public void actionPerformed(ActionEvent e) {
     			String command = e.getActionCommand();
     			if (command.equals("Initialize conversation with user clicked above")) { 
-    				
+    				try {
     				otherUser ComWith = Main.listOtherConnectedUsers.get(rowNumberConnectedUsers-1);
     				boolean AlreadyTalkingWith = false ;
     				otherUserTalkingTo otherUserNeed = null;
@@ -184,7 +184,7 @@ public class Visuel extends JPanel{
 						ThreadManagerSender thread = new ThreadManagerSender(ComWith);
 	    				thread.start();
 					}
-    				
+    				}catch (Exception ex) {}
     				
     			}	
     		}
@@ -242,7 +242,7 @@ public class Visuel extends JPanel{
     			String command = e.getActionCommand();
     			
     			if (command.equals("End conversation with user clicked above")) { 
-    				
+    				try {
     				currentTalkingWith.thread.endConversation();  
     				currentTalkingWith.thread.sendMessage("Terminé",true);
     				
@@ -259,7 +259,7 @@ public class Visuel extends JPanel{
     				}
     				
     				
-    				
+    				}catch(Exception ex) {}
     				
     				
     			}	
