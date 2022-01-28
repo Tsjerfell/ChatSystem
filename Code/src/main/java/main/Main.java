@@ -80,7 +80,7 @@ public class Main {
                 return otherUserTalkingTo.addIP;
             }
         }
-        return Main.addressIP;
+        return null;
     }
 	
 	public static String findPseudo(String IP) {
