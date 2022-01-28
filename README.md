@@ -1,10 +1,8 @@
-# ChatSystem
-
-Un projet des étudiants aux 4A - Informatique - INSA Toulouse
+#Un projet d'étudiants en  4A - Informatique - INSA Toulouse
 
 Erik Semb Omre
 
 Félix Murat
+##Running
 
-## Running
-Essayer de télécharger le .jar et puis de le lancer. Si ceci ne marche pas, pull le repository et ouvre le projet en eclipse. Puis, lance le main de la classe Main
+Essayer de télécharger le .jar et puis de le lancer. Si ceci ne marche pas, pull le repository et ouvrir le projet en eclipse. Ensuite, lancer le main de la classe Main.
